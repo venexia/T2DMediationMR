@@ -24,3 +24,7 @@ enzymes <- features[features$consortium=="LOLIPOP",]$trait
 for (i in enzymes) {
   system(paste0("cp raw/",toupper(i),".txt.gz ",path_features_raw,toupper(i),".txt.gz"))
 }
+
+# CRP ----------------------------------------------------------------
+
+system(paste0("cp raw/GWAS_CRP_eu_dv1.CRP.1.txt ",path_features_raw,"crp.txt"))

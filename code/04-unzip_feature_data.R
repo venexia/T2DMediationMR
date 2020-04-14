@@ -9,17 +9,14 @@ features <- data.table::fread("data/features_sources.csv",
 
 # Unzip files ------------------------------------------------------------------
 
-files <- list.files(path = path_features_raw)
-files <- c(files[41:43],files[45])
-
-for (i in files) {
-  if (grepl(".bgz",i)) {
-    system(paste0("gunzip -c ",path_features_raw,i," > ",path_features_processed,features[features$filename==i,]$trait,features[features$filename==i,]$ext))
-  } else if (grepl(".gz",i)) {
-    system(paste0("gunzip -c ",path_features_raw,i," > ",path_features_processed,features[features$filename==i,]$trait,features[features$filename==i,]$ext))
-  } else if (grepl(".zip",i)) {
-    system(paste0("unzip -c ",path_features_raw,i," > ",path_features_processed,features[features$filename==i,]$trait,features[features$filename==i,]$ext))
+for (i in 1:nrow(features)) {
+  if (grepl(".bgz",features$filename[i])) {
+    system(paste0("gunzip -c ",path_features_raw,features$filename[i]," > ",path_features_processed,features$trait[i],features$ext[i]))
+  } else if (grepl(".gz",features$filename[i])) {
+    system(paste0("gunzip -c ",path_features_raw,features$filename[i]," > ",path_features_processed,features$trait[i],features$ext[i]))
+  } else if (grepl(".zip",features$filename[i])) {
+    system(paste0("unzip -c ",path_features_raw,features$filename[i]," > ",path_features_processed,features$trait[i],features$ext[i]))
   } else {
-    system(paste0("cp ",path_features_raw,i," ",path_features_processed,features[features$filename==i,]$trait,features[features$filename==i,]$ext))
+    system(paste0("cp ",path_features_raw,features$filename[i]," ",path_features_processed,features$trait[i],features$ext[i]))
   }
 }

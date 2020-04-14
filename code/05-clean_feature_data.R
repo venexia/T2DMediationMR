@@ -11,11 +11,11 @@ features <- features[features$filename!="",]
 
 # Format each feature in turn --------------------------------------------------
 
-for (i in 9:nrow(features)) {
+for (i in 1:nrow(features)) {
 
   # State feature under consideration ------------------------------------------
   
-  print(paste0("Feature: ",features[i,]$trait_long))
+  print(paste0("Feature: ",features$trait_long[i]))
     
   # Load data ------------------------------------------------------------------
   
@@ -24,10 +24,12 @@ for (i in 9:nrow(features)) {
                            stringsAsFactors = FALSE,
                            data.table = FALSE)
   
-  # Name columns if header==FALSE and consortium=="GIANT" ----------------------
+  # Name columns if header missing ---------------------------------------------
   
-  if (features$header[i]==FALSE & features$consortium[i]=="GIANT") {
-    colnames(tmp) <- c("MarkerName","Allele1","Allele2","FreqAllele1HapMapCEU","b","se","p","n")
+  if (features$header[i]==FALSE) {
+    f <- features[i,c(10:19)]
+    f <- f[!is.na(f) & f!=""]
+    colnames(tmp) <- f
   }
   
   # Name trait -----------------------------------------------------------------
@@ -48,10 +50,7 @@ for (i in 9:nrow(features)) {
                                                    effect_allele_col = ifelse(features$effect_allele[i]=="","effect_allele",features$effect_allele[i]),
                                                    other_allele_col = ifelse(features$other_allele[i]=="","other_allele",features$other_allele[i]),
                                                    pval_col = ifelse(features$pvalue[i]=="","pval",features$pvalue[i]),
-                                                   ncase_col = ifelse(features$n_case[i]=="","ncase",features$n_case[i]),
-                                                   ncontrol_col = ifelse(features$n_control[i]=="","ncontrol",features$n_control[i]),
                                                    samplesize_col = ifelse(features$n[i]=="","samplesize",features$n[i]),
-                                                   z_col = ifelse(features$zscore[i]=="","z",features$zscore[i]),
                                                    chr_col = ifelse(features$chr_id[i]=="","chr",features$chr_id[i]),
                                                    pos_col = ifelse(features$chr_pos[i]=="","pos",features$chr_pos[i])))
   
@@ -64,7 +63,56 @@ for (i in 9:nrow(features)) {
   
   tmp[,c("mr_keep","pval_origin","id")] <- NULL
   
-  # Save .txt files ------------------------------------------------------------------
+  # Remove empty columns -------------------------------------------------------
+  
+  for (j in colnames(tmp)) {
+    if (class(tmp[,c(j)])=="character") {
+      if (any(tmp[,c(j)]!="")==FALSE) {
+        tmp[,c(j)] <- NULL
+      } 
+    } else {
+      if (any(!is.na(tmp[,c(j)]))==FALSE) {
+        tmp[,c(j)] <- NULL
+      }
+    }      
+  }
+  
+  # Update chr and pos from SNP if rsIDs, chr and pos missing ------------------
+  
+  if (features$rsid[i]==FALSE) {
+    
+    if (features$consortium[i]=="Neale") {
+    tmp <- tmp %>%
+      tidyr::separate(SNP, c("chr", "pos","allele1","allele2"), ":")
+    }
+    if (features$consortium[i]=="Ligthart") {
+      tmp <- tmp %>%
+        tidyr::separate(SNP, c("chr", "pos","allele1","allele2"), "_")
+    }
+    
+    tmp$allele1 <- toupper(tmp$allele1)
+    tmp$allele2 <- toupper(tmp$allele2)
+    
+    tmp$other_allele <- NA
+    tmp$other_allele <- ifelse(tmp$allele1==tmp$effect_allele,tmp$allele2,tmp$other_allele)
+    tmp$other_allele <- ifelse(tmp$allele2==tmp$effect_allele,tmp$allele1,tmp$other_allele)
+    
+    tmp[,c("allele1","allele2")] <- NULL
+    
+  }
+  
+  # Add rsIDs if missing -------------------------------------------------------
+  
+  if (features$rsid[i]==FALSE) {
+    tmp <- rsid(tmp,"chr","pos")
+  }
+  
+  # Ensure alleles are capitalized ---------------------------------------------
+  
+  tmp$effect_allele <- toupper(tmp$effect_allele)
+  tmp$other_allele <- toupper(tmp$other_allele)
+  
+  # Save .txt files ------------------------------------------------------------
   
   data.table::fwrite(tmp,paste0(path_features_final,features$trait[i],".txt"))
   

@@ -36,6 +36,13 @@ for (i in enzymes) {
   features[features$trait==i,]$ext <- ".txt"
 }
 
+
+# Update CRP -----------------------------------------------------------
+
+features[features$trait=="crp",]$filename <- "crp.txt"
+features[features$trait=="crp",]$zip <- NA
+features[features$trait=="crp",]$ext <- ".txt"
+
 # Save -------------------------------------------------------------------------
 
 data.table::fwrite(features,"data/features_sources.csv")
