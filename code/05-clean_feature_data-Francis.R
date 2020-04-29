@@ -13,7 +13,7 @@ features <- features[features$filename!="",]
 
 # Format each feature in turn --------------------------------------------------
 
-for (i in 51:nrow(features)) {
+for (i in 71:nrow(features)) {
 
   # State feature under consideration ------------------------------------------
   

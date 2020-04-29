@@ -11,14 +11,30 @@ features <- data.table::fread("data/features_sources.csv",
 
 features <- features[features$filename!="",]
 
+t2d_ins <- data.table::fread("data/instrument-t2d.txt",
+                             stringsAsFactors = FALSE,
+                             data.table = FALSE)
+
+t2d_ins$neale1 <- paste(t2d_ins$chr,t2d_ins$pos,t2d_ins$effect_allele,t2d_ins$other_allele,sep = ":")
+t2d_ins$neale2 <- paste(t2d_ins$chr,t2d_ins$pos,t2d_ins$other_allele,t2d_ins$effect_allele,sep = ":")
+t2d_ins$ligthart1 <- paste(t2d_ins$chr,t2d_ins$pos,tolower(t2d_ins$effect_allele),tolower(t2d_ins$other_allele),sep = "_")
+t2d_ins$ligthart2 <- paste(t2d_ins$chr,t2d_ins$pos,tolower(t2d_ins$other_allele),tolower(t2d_ins$effect_allele),sep = "_")
+
 # Format each feature in turn --------------------------------------------------
 
-for (i in 51:nrow(features)) {
+# Leptin
+#  Leptin adj bmi
+# HOMA_IR
+# HOMA_B
+# albumin
+# basophil
 
+for (i in 38:nrow(features)) {
+  
   # State feature under consideration ------------------------------------------
   
   print(paste0("Feature: ",features$trait_long[i]))
-    
+  
   # Load data ------------------------------------------------------------------
   
   tmp <- data.table::fread(paste0(path_features_processed,features$trait[i],features$ext[i]),
@@ -79,43 +95,43 @@ for (i in 51:nrow(features)) {
     }      
   }
   
+  # Ensure alleles are capitalized ---------------------------------------------
+  
+  if ("effect_allele" %in% colnames(tmp)) {
+  tmp$effect_allele <- toupper(tmp$effect_allele)
+  }
+  
+  if ("other_allele" %in% colnames(tmp)) {
+  tmp$other_allele <- toupper(tmp$other_allele)
+  }
+  
+  # Extract genome wide significant hits ---------------------------------------
+  
+  gws <- tmp[tmp$pval<5e-8,]
+  gws$instrument <- features$trait[i]
+  
   # Update chr and pos from SNP if rsIDs, chr and pos missing ------------------
   
   if (features$rsid[i]==FALSE) {
     
     if (features$consortium[i]=="Neale") {
-    tmp <- tmp %>%
-      tidyr::separate(SNP, c("chr", "pos","allele1","allele2"), ":")
+      tmp <- tmp[tmp$SNP %in% c(t2d_ins$neale1,t2d_ins$neale2),]
     }
     if (features$consortium[i]=="Ligthart") {
-      tmp <- tmp %>%
-        tidyr::separate(SNP, c("chr", "pos","allele1","allele2"), "_")
+      tmp <- tmp[tmp$SNP %in% c(t2d_ins$ligthart1,t2d_ins$ligthart2),]
     }
-    
-    tmp$allele1 <- toupper(tmp$allele1)
-    tmp$allele2 <- toupper(tmp$allele2)
-    
-    tmp$other_allele <- NA
-    tmp$other_allele <- ifelse(tmp$allele1==tmp$effect_allele,tmp$allele2,tmp$other_allele)
-    tmp$other_allele <- ifelse(tmp$allele2==tmp$effect_allele,tmp$allele1,tmp$other_allele)
-    
-    tmp[,c("allele1","allele2")] <- NULL
-    
+  
+  } else{
+    tmp <- tmp[tmp$SNP %in% t2d_ins$SNP,]
   }
   
-  # Add rsIDs if missing -------------------------------------------------------
+  # Join genome-wide significant and T2D ---------------------------------------
   
-  if (features$rsid[i]==FALSE) {
-    tmp <- rsid(tmp,"chr","pos")
-  }
-  
-  # Ensure alleles are capitalized ---------------------------------------------
-  
-  tmp$effect_allele <- toupper(tmp$effect_allele)
-  tmp$other_allele <- toupper(tmp$other_allele)
+  tmp$instrument <- "type 2 diabetes"
+  df <- rbind(tmp,gws)
   
   # Save .txt files ------------------------------------------------------------
   
-  data.table::fwrite(tmp,paste0(path_features_final,features$trait[i],".txt"))
+  data.table::fwrite(df,paste0(path_features_final,features$trait[i],".txt"))
   
 }

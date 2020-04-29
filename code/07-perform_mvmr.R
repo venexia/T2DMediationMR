@@ -7,8 +7,6 @@ features <- data.table::fread("data/features_sources.csv",
                               stringsAsFactors = FALSE,
                               data.table = FALSE)
 
-features <- features[features$rsid==TRUE,]
-
 # Load type 2 diabetes GWAS ----------------------------------------------------
 
 t2d <- data.table::fread("data/t2d_rsid.txt",
@@ -45,7 +43,7 @@ results <- data.frame(analysis = character(),
 
 # Perform analysis for each feature --------------------------------------------
 
-i = 1
+i = 48
 
 ## Load feature GWAS -----------------------------------------------------------
 
