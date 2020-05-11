@@ -1,4 +1,4 @@
-extract_feature <- function(trait,id) {
+extract_feature_ieugwas <- function(trait,id) {
   
   tophits <- as.data.frame(ieugwasr::tophits(id = id))
   

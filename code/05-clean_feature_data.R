@@ -1,24 +1,22 @@
 rm(list=setdiff(ls(), keep))
 graphics.off()
 
-library(magrittr)
-
 # Load features data -----------------------------------------------------------
 
 features <- data.table::fread("data/features_sources.csv",
                               stringsAsFactors = FALSE,
                               data.table = FALSE)
 
-features <- features[features$filename!="",]
+features <- features[features$ieugwas=="",]
 
 # Format each feature in turn --------------------------------------------------
 
-for (i in 51:nrow(features)) {
-
+for (i in 15:nrow(features)) {
+  
   # State feature under consideration ------------------------------------------
   
   print(paste0("Feature: ",features$trait_long[i]))
-    
+  
   # Load data ------------------------------------------------------------------
   
   tmp <- data.table::fread(paste0(path_features_processed,features$trait[i],features$ext[i]),
@@ -84,12 +82,16 @@ for (i in 51:nrow(features)) {
   if (features$rsid[i]==FALSE) {
     
     if (features$consortium[i]=="Neale") {
-    tmp <- tmp %>%
-      tidyr::separate(SNP, c("chr", "pos","allele1","allele2"), ":")
+      tmp <- tmp %>%
+        tidyr::separate(SNP, c("chr", "pos","allele1","allele2"), ":", remove = FALSE)
+      tmp$variant <- tmp$SNP
+      tmp$SNP <- NULL
     }
     if (features$consortium[i]=="Ligthart") {
       tmp <- tmp %>%
-        tidyr::separate(SNP, c("chr", "pos","allele1","allele2"), "_")
+        tidyr::separate(SNP, c("chr", "pos","allele1","allele2"), "_", remove = FALSE)
+      tmp$variant <- tmp$SNP
+      tmp$SNP <- NULL
     }
     
     tmp$allele1 <- toupper(tmp$allele1)
@@ -113,6 +115,7 @@ for (i in 51:nrow(features)) {
   
   tmp$effect_allele <- toupper(tmp$effect_allele)
   tmp$other_allele <- toupper(tmp$other_allele)
+  tmp <- tmp[!is.na(tmp$SNP),]
   
   # Save .txt files ------------------------------------------------------------
   

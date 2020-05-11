@@ -3,7 +3,7 @@ graphics.off()
 
 # Load feature data ------------------------------------------------------------
 
-features <- readxl::read_xlsx("raw/feature_sources.xlsx",sheet = "All")
+features <- readxl::read_xlsx("raw/feature_sources_ieugwas.xlsx",sheet = "All")
 
 # Determine file name ----------------------------------------------------------
 

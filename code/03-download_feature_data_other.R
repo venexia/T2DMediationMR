@@ -1,19 +1,19 @@
 rm(list=setdiff(ls(), keep))
 graphics.off()
 
-# Adiponectin ------------------------------------------------------------------
-
-adiponectin_files <- list.files(path = "raw/", 
-                                pattern = "adipogen.discovery.eur_.meta_.public.release.part")
-
-adiponectin <- NULL
-
-for (file in adiponectin_files) {
-  tmp <- data.table::fread(paste0("raw/",file), data.table = FALSE, stringsAsFactors = FALSE)
-  adiponectin <- rbind(adiponectin,tmp)
-}
-
-data.table::fwrite(adiponectin,paste0(path_features_raw,"adiponectin.txt"))
+# # Adiponectin ------------------------------------------------------------------
+# 
+# adiponectin_files <- list.files(path = "raw/", 
+#                                 pattern = "adipogen.discovery.eur_.meta_.public.release.part")
+# 
+# adiponectin <- NULL
+# 
+# for (file in adiponectin_files) {
+#   tmp <- data.table::fread(paste0("raw/",file), data.table = FALSE, stringsAsFactors = FALSE)
+#   adiponectin <- rbind(adiponectin,tmp)
+# }
+# 
+# data.table::fwrite(adiponectin,paste0(path_features_raw,"adiponectin.txt"))
 
 # Liver enzymes ----------------------------------------------------------------
 

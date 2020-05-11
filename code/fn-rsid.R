@@ -8,14 +8,21 @@ rsid <- function(dat,chr,pos) {
     warning("The variable SNP has been overwritten.")
   }
   
-  dat$SNP <- NA
+  dat$SNP <- NULL
+  
+  # Remove X and Y chromosome SNPs -------------------------------------------
+  
+  dat <- dat[!(dat$chr %in% c("X","Y","x","y")),]
   
   # Ensure chromosome and position are integers in dat -----------------------
   
   dat[,c(chr)] <- as.integer(dat[,c(chr)])
   dat[,c(pos)] <- as.integer(dat[,c(pos)])
+  dat$chrpos <- paste0(dat[,c(chr)],"_",dat[,c(pos)])
   
   # Loop over each chromosome --------------------------------------------------
+  
+  custom_link <- NULL
   
   for (i in 1:22) {
     
@@ -33,15 +40,18 @@ rsid <- function(dat,chr,pos) {
     
     # Rename columns in link to match dat --------------------------------------
     
-    colnames(link) <- c(chr,pos,"tmp_SNP")
+    colnames(link) <- c(chr,pos,"SNP")
+    link$chrpos <- paste0(link$chr,"_",link$pos)
     
     # Merge link and dat -------------------------------------------------------
     
-    dat <- data.table::merge.data.table(dat,link,by=c(chr,pos),all.x = TRUE)
-    dat$SNP <- ifelse(dat$chr==i,dat$tmp_SNP,dat$SNP)
-    dat$tmp_SNP <- NULL
+    link <- link[link$chrpos %in% dat$chrpos,]
+    custom_link <- rbind(custom_link,link)
     
   }
+  
+  dat <- merge(dat,custom_link,by = c("chrpos","chr","pos"))
+  dat$chrpos <- NULL
   
   return(dat)
   

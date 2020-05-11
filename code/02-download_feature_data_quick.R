@@ -4,11 +4,10 @@ graphics.off()
 # Load features data -----------------------------------------------------------
 
 features <- data.table::fread("data/features_sources.csv",
-                              colClasses = c(rep("character",6),"numeric",rep("character",19)),
                               stringsAsFactors = FALSE,
                               data.table = FALSE)
 
-features <- features[features$quick_download==TRUE,]
+features <- features[features$quick_download==TRUE & features$ieugwas=="",]
 
 # Download data ----------------------------------------------------------------
 
