@@ -5,7 +5,13 @@ create_analysis_data <- function(data_t2d,data_feature,data_outcome) {
   snplist <- intersect(data_feature$SNP,data_t2d$SNP)
   snplist <- intersect(data_outcome$SNP,snplist)
   snplist <- unique(snplist)
-  clumped <- data_feature[data_feature$SNP %in% snplist,c("SNP","pval")]
+  
+  if (length(data_feature$SNP)<length(data_t2d$SNP)) {
+    clumped <- data_feature[data_feature$SNP %in% snplist,c("SNP","pval")]
+  } else {
+    clumped <- data_t2d[data_t2d$SNP %in% snplist,c("SNP","pval")]
+  }
+  
   colnames(clumped) <- c("rsid","pval")
   clumped <- ieugwasr::ld_clump(dat = clumped, clump_kb = 10000, clump_r2 = 0.001)
   
