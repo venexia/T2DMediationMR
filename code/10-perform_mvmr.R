@@ -75,7 +75,7 @@ results <- data.table::fread("output/mvmr_results.csv",
 
 # Perform analysis for each feature-outcome combination ------------------------
 
-for (i in 59:nrow(feature_outcome)) {
+for (i in 1:nrow(feature_outcome)) {
   
   print(paste0("i: ",i,"; Feature: ",feature_outcome$feature[i],"; Outcome: ",feature_outcome$outcome[i]))
   
