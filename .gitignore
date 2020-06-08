@@ -3,9 +3,9 @@
 .RData*
 .Ruserdata
 T2DSubtypesMR.Rproj
-raw/
-data/
-output/
+raw/*
+data/*
+output/*
 .DS_Store
 code/specify_paths.R
 tmp/
