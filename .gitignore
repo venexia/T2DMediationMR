@@ -1,0 +1,16 @@
+.Rproj.user
+.Rhistory
+.RData*
+.Ruserdata
+T2DSubtypesMR.Rproj
+raw/
+data/
+output/
+.DS_Store
+code/specify_paths.R
+tmp/
+documents/
+plink_mac_20200428/
+!raw/README.md
+!data/README.md
+!output/README.md
