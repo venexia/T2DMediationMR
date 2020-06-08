@@ -60,7 +60,8 @@ for (i in 67:nrow(features)) {
   ## Extract feature SNPs --------------------------------------------------------
   
   if (features[i,]$ieugwas!="") {
-    analysis_feature <- extract_feature_ieugwas(features[i,]$trait,features[i,]$ieugwas)
+    analysis_feature <- extract_feature_ieugwas(trait = features[i,]$trait,
+                                                id = features[i,]$ieugwas)
   } else {
     analysis_feature <- extract_feature_manual(features[i,]$trait)
   }

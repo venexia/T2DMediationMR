@@ -5,10 +5,6 @@ graphics.off()
 
 source("code/specify_paths.R")
 
-# Source functions -------------------------------------------------------------
-
-source("code/fn-rsid.R")
-
 # Load features data -----------------------------------------------------------
 
 features <- data.table::fread("data/features_sources.csv",
@@ -95,12 +91,12 @@ for (i in 15:nrow(features)) {
   if (features$rsid[i]==FALSE) {
     
     if (features$consortium[i]=="Neale") {
-      tmp <- tidyr::separate(tmp, SNP, c("chr", "pos","allele1","allele2"), ":", remove = FALSE)
+      tmp <- tidyr::separate(tmp, SNP, c("chr","pos","allele1","allele2"), ":", remove = FALSE)
       tmp$variant <- tmp$SNP
       tmp$SNP <- NULL
     }
     if (features$consortium[i]=="Ligthart") {
-      tmp <- tidyr::separate(tmp, SNP, c("chr", "pos","allele1","allele2"), "_", remove = FALSE)
+      tmp <- tidyr::separate(tmp, SNP, c("chr","pos","allele1","allele2"), "_", remove = FALSE)
       tmp$variant <- tmp$SNP
       tmp$SNP <- NULL
     }
@@ -116,19 +112,27 @@ for (i in 15:nrow(features)) {
     
   }
   
-  # Add rsIDs if missing -------------------------------------------------------
+  # Identify top hits ----------------------------------------------------------
   
-  if (features$rsid[i]==FALSE) {
-    tmp <- rsid(dat = tmp,
-                chr = "chr",
-                pos = "pos")
+  tophits <- tmp[tmp$pval < 5e-8 & !is.na(tmp$pval),]
+  tophits$rsid <- tophits$SNP
+  tophits <- ieugwasr::ld_clump(tophits)
+  
+  if (nrow(tophits)>0) {
+    tophits <- tophits[,intersect(colnames(tophits),c("SNP","chr","pos","effect_allele","other_allele","eaf","beta","se","pval"))]
+    tophits$instrument <- trait
   }
   
-  # Ensure alleles are capitalized ---------------------------------------------
+  t2dhits <- tmp[tmp$SNP %in% t2d_ins$SNP,]
   
-  tmp$effect_allele <- toupper(tmp$effect_allele)
-  tmp$other_allele <- toupper(tmp$other_allele)
-  tmp <- tmp[!is.na(tmp$SNP),]
+  if (nrow(t2dhits)>0) {
+    t2dhits <- t2dhits[,intersect(colnames(tophits),c("SNP","chr","pos","effect_allele","other_allele","eaf","beta","se","pval"))]
+    t2dhits$instrument <- "type 2 diabetes"
+  }
+  
+  tmp <- rbind(tophits,t2dhits)
+  
+  tmp$trait <- trait
   
   # Save .txt files ------------------------------------------------------------
   

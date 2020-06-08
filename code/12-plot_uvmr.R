@@ -42,8 +42,8 @@ df$trait_long <- factor(df$trait_long)
 
 ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = forcats::fct_reorder(trait_long, or_pos, .desc = TRUE), y = or_pos, color = direction)) +
   ggplot2::geom_hline(yintercept=1, col = "dark gray") +
-  ggplot2::geom_linerange(ggplot2::aes(ymin = lci_or_pos, ymax = uci_or_pos), alpha = 0.6, size = 1, position=ggplot2::position_dodge(width=0.5)) +
-  ggplot2::geom_linerange(ggplot2::aes(ymin = or_pos-(1e-3), ymax = or_pos+(1e-3)), alpha = 1, size = 1, position=ggplot2::position_dodge(width=0.5)) +
+  ggplot2::geom_point(shape = 15, size = 0.5) +
+  ggplot2::geom_linerange(ggplot2::aes(ymin = lci_or_pos, ymax = uci_or_pos), alpha = 0.6, size = 1) +
   ggplot2::scale_y_continuous(trans = "log", breaks = c(0.12,0.25,0.5,1,2,4,8,16),lim = c(0.06,32)) +
   ggplot2::scale_color_manual(breaks = c("Decreases risk of type 2 diabetes","Increases risk of type 2 diabetes"), values=c("#377eb8","#e41a1c")) +
   ggplot2::theme_minimal() +

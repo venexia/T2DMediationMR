@@ -4,7 +4,7 @@ extract_feature_manual <- function(trait) {
                           stringsAsFactors = FALSE,
                           data.table = FALSE)
   
-  tophits <- df[df$pval < 5e-8,]
+  tophits <- df[df$pval < 5e-8 & !is.na(df$pval),]
   tophits$rsid <- tophits$SNP
   tophits <- ieugwasr::ld_clump(tophits)
   

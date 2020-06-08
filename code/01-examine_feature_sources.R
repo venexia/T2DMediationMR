@@ -1,5 +1,9 @@
-rm(list=setdiff(ls(), keep))
+rm(list=ls())
 graphics.off()
+
+# Specify paths ----------------------------------------------------------------
+
+source("code/specify_paths.R")
 
 # Load feature data ------------------------------------------------------------
 

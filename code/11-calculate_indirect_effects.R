@@ -3,7 +3,7 @@ graphics.off()
 
 df <-  data.table::fread("output/mvmr_results.csv",
                          stringsAsFactors = FALSE,
-                         select = c("analysis","exposure","outcome","effect","estimate","se"),
+                         #select = c("analysis","exposure","outcome","effect","estimate","se"),
                          data.table = FALSE)
 
 # Multivariable MR with difference of coefficients
