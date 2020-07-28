@@ -3,7 +3,11 @@ graphics.off()
 
 # Specify paths ----------------------------------------------------------------
 
-source("code/specify_paths.R")
+source("code/specify_paths.R", echo = TRUE)
+
+# Source functions -------------------------------------------------------------
+
+source("code/fn-liftover.R", echo = TRUE)
 
 # Load feature data ------------------------------------------------------------
 
@@ -23,17 +27,22 @@ for (i in gwas[gwas$consortium=="LOLIPOP",]$trait) {
   
   tmp$exposure <- i
   
-  tmp <- tmp[,c("MarkerName","Chr36","Position36",
+  tmp <- tmp[,c("Chr36","Position36",
                 "Effect_allele","Other_allele",
                 "Effect","StdErr","P_value",
                 "N",
                 "exposure")]
   
-  colnames(tmp) <- c("SNP","chr","pos",
+  colnames(tmp) <- c("chr36","pos36",
                      "effect_allele","other_allele",
                      "beta","se","pval",
                      "samplesize",
                      "exposure")
+  
+  map <- liftover(trait = i)
+  tmp <- merge(tmp, map, by = c("chr36","pos36"))
+  
+  tmp[,c("chr36","pos36")] <- NULL
   
   data.table::fwrite(tmp,paste0("data/gwas-",i,".txt"))
   
@@ -130,26 +139,31 @@ data.table::fwrite(tmp,"data/gwas-crp.txt")
 
 # Format isi GWAS --------------------------------------------------------------
 
-tmp <- data.table::fread("raw/gwas-isi.txt",
+tmp <- data.table::fread("raw/gwas-isi_adjbmi.txt",
                          data.table = FALSE,
                          stringsAsFactors = FALSE)
 
-tmp$exposure <- "isi"
+tmp$exposure <- "isi_adjbmi"
 
-tmp <- tmp[,c("snp","chr_build36","pos_build36",
+tmp <- tmp[,c("chr_build36","pos_build36",
               "effect_allele","other_allele",
               "effect","stderr","pvalue",
               "exposure")]
 
-colnames(tmp) <- c("SNP","chr","pos",
+colnames(tmp) <- c("chr36","pos36",
                    "effect_allele","other_allele",
                    "beta","se","pval",
                    "exposure")
 
+map <- liftover(trait = "isi_adjbmi")
+tmp <- merge(tmp, map, by = c("chr36","pos36"))
+
+tmp[,c("chr36","pos36")] <- NULL
+
 tmp$effect_allele <- toupper(tmp$effect_allele)
 tmp$other_allele <- toupper(tmp$other_allele)
 
-data.table::fwrite(tmp,"data/gwas-isi.txt")
+data.table::fwrite(tmp,"data/gwas-isi_adjbmi.txt")
 
 # Format t2d GWAS --------------------------------------------------------------
 

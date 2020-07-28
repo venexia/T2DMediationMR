@@ -1,0 +1,1 @@
+This directory contains the input and output files for SNPNexus (https://www.snp-nexus.org/v4/) used to identify the rsIDs for variants from their chromosome, position and alleles.

@@ -3,16 +3,17 @@ graphics.off()
 
 # Specify paths ----------------------------------------------------------------
 
-source("code/specify_paths.R")
+source("code/specify_paths.R", echo = TRUE)
 
 # Load feature data ------------------------------------------------------------
 
-gwas <- data.table::fread("raw/gwas.csv")
+gwas <- data.table::fread("raw/gwas.csv",
+                          stringsAsFactors = FALSE,
+                          data.table = FALSE)
 
-# Restrict to SNPs without rsIDs -----------------------------------------------
+# Restrict to GWAS without rsIDs -----------------------------------------------
 
-gwas <- gwas[(gwas$ieugwas=="" & 
-                (gwas$consortium=="Neale") | gwas$trait %in% c("crp","pad","t2d")),]
+gwas <- gwas[gwas$rsid==FALSE,]
 
 # Extract genome wide significant hits for each GWAS ---------------------------
 
@@ -47,14 +48,14 @@ for (i in 1:nrow(gwas)) {
     df <- rbind(df,tmp)
     
     if (nrow(df)<=100000) {
-    
-    data.table::fwrite(df,
-                       paste0("data/snpnexus_input-",gwas$trait[i],".txt"),
-                       sep = "\t",
-                       col.names = FALSE)
+      
+      data.table::fwrite(df,
+                         paste0("snpnexus/snpnexus_input-",gwas$trait[i],".txt"),
+                         sep = "\t",
+                         col.names = FALSE)
       
     } else {
-     
+      
       n <- ceiling(nrow(df)/100000)
       
       for (j in 1:n) {
@@ -63,15 +64,13 @@ for (i in 1:nrow(gwas)) {
         end <- min(j*100000,nrow(df))
         
         data.table::fwrite(df[start:end,],
-                           paste0("data/snpnexus_input-",gwas$trait[i],"_",j,".txt"),
+                           paste0("snpnexus/snpnexus_input-",gwas$trait[i],"_",j,".txt"),
                            sep = "\t",
                            col.names = FALSE)
       }
-       
+      
     }
     
   }
   
 }
-
-# Submit files to SNPNexus to annotate with rsIDs from human assembly GRCh37

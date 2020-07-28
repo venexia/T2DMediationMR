@@ -11,10 +11,6 @@ instruments <- data.table::fread("data/instruments_all.txt",
                                  stringsAsFactors = FALSE,
                                  data.table = FALSE)
 
-# Generate chromosome position annotation for instruments ----------------------
-
-instruments$chrpos <- paste(instruments$chr, instruments$pos, sep = ":")
-
 # Create results data frame ----------------------------------------------------
 
 results <- NULL
@@ -64,15 +60,20 @@ for (j in c("t2d","cad","pad")) {
     
     print(paste0("Feature: ",i))
     
-    ## Create exposure dataset ---------------------------------------------------
+    ## Create exposure dataset -------------------------------------------------
     
     exp <- TwoSampleMR::format_data(dat = df[df$exposure==i,],
                                     type = "exposure",
                                     phenotype_col = "exposure")
     
-    ## Note: instruments already clumped
+    ## Clump data --------------------------------------------------------------
     
-    ## Create outcome dataset ----------------------------------------------------
+    exp <- TwoSampleMR::clump_data(exp,
+                                   clump_kb = 10000,
+                                   clump_r2 = 0.001,
+                                   pop = "EUR")
+    
+    ## Create outcome dataset --------------------------------------------------
     
     out <- TwoSampleMR::format_data(dat = outcome,
                                     type = "outcome",
