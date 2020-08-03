@@ -11,15 +11,19 @@ ST1 <- data.table::fread("raw/gwas.csv", data.table = FALSE)
 openxlsx::addWorksheet(wb, "ST1")
 openxlsx::writeData(wb, "ST1", ST1)
 
-# Supplementary Table 2 - Instruments ----------------------------------
-
-ST2 <- data.table::fread("data/instruments.csv", data.table = FALSE)
-openxlsx::addWorksheet(wb, "ST2")
-openxlsx::writeData(wb, "ST2", ST2)
-
 # Save excel workbook ----------------------------------------------------------
 
 openxlsx::saveWorkbook(wb, file = "output/SupplementaryTables.xlsx", overwrite = TRUE)
+
+# Supplementary Content - Instruments ----------------------------------
+
+wb2 <- openxlsx::createWorkbook()
+instruments <- data.table::fread("data/instruments_all.txt", data.table = FALSE)
+for (i in unique(instruments$exposure)) {
+  openxlsx::addWorksheet(wb2, i)
+  openxlsx::writeData(wb2, i, instruments[instruments$exposure==i,])
+}
+openxlsx::saveWorkbook(wb2, file = "output/Instruments.xlsx", overwrite = TRUE)
 
 # Render markdown containing supplementary figures -----------------------------
 

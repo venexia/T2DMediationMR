@@ -11,5 +11,5 @@ knitr::opts_chunk$set(echo = TRUE)
 \newpage
 Supplementary Figure 1: Summary plot for the assessment of the independence and exclusion restriction assumptions
 ```{r echo=FALSE, results = 'asis', out.width="100%"}
-knitr::include_graphics("../output/assess_assumptions.tiff")
+knitr::include_graphics("../output/assess_assumptions.jpeg")
 ```

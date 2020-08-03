@@ -20,6 +20,12 @@ colnames(gwas) <- c("exposure","exposure_name")
 
 results <- merge(results, gwas, by = c("exposure"))
 
+df$exposure_name <- gsub("adjusted","adj.",df$exposure_name)
+df$exposure_name <- gsub("distribution","dist.",df$exposure_name)
+df$exposure_name <- gsub("concentration","con.",df$exposure_name)
+df$exposure_name <- gsub("females","F",df$exposure_name)
+df$exposure_name <- gsub("males","M",df$exposure_name)
+df$exposure_name <- factor(df$exposure_name)
 
 # Format outcome labels -------------------------------------------------------
 
@@ -82,5 +88,5 @@ ggplot2::ggplot(data = results,
                  legend.title = ggplot2::element_text(size=8),
                  plot.caption = ggplot2::element_text(hjust = 0)) 
 
-ggplot2::ggsave(filename = "output/assess_assumptions.tiff",
+ggplot2::ggsave(filename = "output/assess_assumptions.jpeg",
                 dpi = 300, height = 279.4, width = 215.9, unit = "mm", scale = 1)
