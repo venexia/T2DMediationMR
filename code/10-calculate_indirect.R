@@ -8,11 +8,12 @@ mvmr <-  data.table::fread("output/mvmr_results.csv",
                            stringsAsFactors = FALSE,
                            data.table = FALSE)
 
-mvmr <- mvmr[mvmr$outcome %in% c("pad","cad") & mvmr$effect=="direct" & mvmr$exposure=="t2d",]
+mvmr <- mvmr[mvmr$effect=="direct",]
 mvmr$effect <- NULL
 colnames(mvmr) <- c("analysis","mediator","outcome","estimate_B","se_B")
 
 mvmr$exposure <- substr(mvmr$analysis,1,nchar(mvmr$analysis)-4)
+mvmr$exposure <- ifelse(mvmr$exposure==mvmr$mediator,"t2d",mvmr$exposure)
 mvmr$analysis <- NULL
 
 # Prepare UVMR results ---------------------------------------------------------
@@ -22,7 +23,7 @@ uvmr <-  data.table::fread("output/uvmr_results.csv",
                            stringsAsFactors = FALSE,
                            data.table = FALSE)
 
-uvmr <- uvmr[uvmr$method %in% c("Inverse variance weighted","Wald ratio") & uvmr$outcome=="t2d",c("exposure","outcome","b","se")]
+uvmr <- uvmr[uvmr$method %in% c("Inverse variance weighted","Wald ratio") & !(uvmr$outcome %in% c("cad","pad")), c("exposure","outcome","b","se")]
 
 colnames(uvmr) <- c("exposure","mediator","estimate_A","se_A")
 
@@ -31,6 +32,7 @@ uvmr <- uvmr[uvmr$exposure %in% mvmr$exposure,]
 # Combine estimates ------------------------------------------------------------
 
 df <- merge(uvmr, mvmr, by = c("exposure","mediator"), all = TRUE)
+df <- na.omit(df)
 
 # Calculate indirect effects ---------------------------------------------------
 
@@ -43,7 +45,7 @@ df$pc_A <- df$se_A/abs(df$estimate_A)
 df$pc_B <- df$se_B/abs(df$estimate_B)
 df$pc <- df$se/abs(df$estimate)
 
-df <- df[,c("exposure","outcome","estimate","se")]
+df <- df[,c("exposure","outcome","mediator","estimate","se")]
 df$analysis <- paste0(df$exposure,"_",df$outcome)
 df$effect <- "indirect"
 
@@ -55,6 +57,8 @@ mvmr <-  data.table::fread("output/mvmr_results.csv",
                            stringsAsFactors = FALSE,
                            data.table = FALSE)
 
+mvmr$mediator <- ifelse(mvmr$exposure==substr(mvmr$analysis,1,nchar(mvmr$analysis)-4),"t2d", substr(mvmr$analysis,1,nchar(mvmr$analysis)-4))
+
 uvmr <-  data.table::fread("output/uvmr_results.csv",
                            stringsAsFactors = FALSE,
                            data.table = FALSE)
@@ -65,6 +69,7 @@ uvmr$effect <- "total"
 uvmr$estimate <- uvmr$b
 uvmr$snps <- uvmr$snps_in
 uvmr[,c("id.exposure","id.outcome","b","snps_in","snps_mr","method")] <- NULL
+uvmr$mediator <- ""
 
 all <- plyr::rbind.fill(uvmr,mvmr)
 

@@ -106,6 +106,29 @@ for (i in gwas[gwas$consortium=="GIANT",]$trait) {
   
 }
 
+# Format MAGIC consortium GWAS -------------------------------------------------
+
+for (i in gwas[gwas$consortium=="MAGIC" & gwas$trait!="isi_adjbmi",]$trait) {
+  
+  tmp <- data.table::fread(paste0("raw/gwas-",i,".txt"),
+                           data.table = FALSE,
+                           stringsAsFactors = FALSE)
+  
+  tmp$exposure <- i
+  
+  tmp <- tmp[,c("snp",
+                "effect_allele","other_allele",
+                "effect","stderr","pvalue",
+                "exposure")]
+  
+  colnames(tmp) <- c("SNP",
+                     "effect_allele","other_allele",
+                     "beta","se","pval",
+                     "exposure")
+  
+  data.table::fwrite(tmp,paste0("data/gwas-",i,".txt"))
+  
+}
 
 # Format crp GWAS --------------------------------------------------------------
 

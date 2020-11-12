@@ -9,7 +9,25 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 \newpage
-Supplementary Figure 1: Summary plot for the assessment of the independence and exclusion restriction assumptions
+Supplementary Figure 1: Univariate Mendelian randomization estimates for the effect on type 2 diabetes using alternative methods
+```{r echo=FALSE, results = 'asis', out.width="100%"}
+knitr::include_graphics("../output/uvmr_t2d_sa.jpeg")
+```
+
+\newpage
+Supplementary Figure 2: Univariate Mendelian randomization estimates for the effect on coronary artery disease using alternative methods
+```{r echo=FALSE, results = 'asis', out.width="100%"}
+knitr::include_graphics("../output/uvmr_cad_sa.jpeg")
+```
+
+\newpage
+Supplementary Figure 3: Univariate Mendelian randomization estimates for the effect on peripheral artery disease using alternative methods
+```{r echo=FALSE, results = 'asis', out.width="100%"}
+knitr::include_graphics("../output/uvmr_pad_sa.jpeg")
+```
+
+\newpage
+Supplementary Figure 4: Summary plot for the assessment of the independence and exclusion restriction assumptions
 ```{r echo=FALSE, results = 'asis', out.width="100%"}
 knitr::include_graphics("../output/assess_assumptions.jpeg")
 ```
