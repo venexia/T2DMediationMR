@@ -14,6 +14,7 @@ tmp/
 documents/
 plink_mac_20200428/
 !raw/README.md
+!raw/gwas.csv
 !data/README.md
 !output/README.md
 !liftover/README.md

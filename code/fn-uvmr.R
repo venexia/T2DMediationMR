@@ -1,5 +1,5 @@
 uvmr <- function(exposure, outcome) {
-  
+
   # Load source data info ------------------------------------------------------
   
   gwas <- data.table::fread("raw/gwas.csv",

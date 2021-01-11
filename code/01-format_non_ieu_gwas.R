@@ -62,7 +62,7 @@ for (i in gwas[gwas$consortium=="Neale",]$trait) {
   
   tmp <- tidyr::separate(data = tmp,
                          col = variant,
-                         into = c("chr","pos","effect_allele","other_allele"),
+                         into = c("chr","pos","other_allele","effect_allele"),
                          sep = ":",
                          remove = FALSE)
   

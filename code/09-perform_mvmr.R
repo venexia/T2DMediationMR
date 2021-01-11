@@ -12,22 +12,24 @@ source("code/fn-harmonise_snps.R", echo = TRUE)
 
 # Specify results data frame ---------------------------------------------------
 
-results <- data.frame(analysis = character(),
-                      exposure = character(),
-                      outcome = character(),
-                      effect = character(),
-                      estimate = numeric(),
-                      se = numeric(),
-                      pval = numeric(),
-                      snps = character(),
-                      Q_strength = numeric(),
-                      Q_valid = numeric(),
-                      condF = numeric(),
-                      stringsAsFactors = FALSE)
+# results <- data.frame(analysis = character(),
+#                       exposure = character(),
+#                       outcome = character(),
+#                       effect = character(),
+#                       estimate = numeric(),
+#                       se = numeric(),
+#                       pval = numeric(),
+#                       snps = character(),
+#                       Q_strength = numeric(),
+#                       Q_valid = numeric(),
+#                       condF = numeric(),
+#                       stringsAsFactors = FALSE)
+
+results <- data.table::fread("output/mvmr_results.csv", data.table = FALSE)
 
 # Specify type 2 diabetes instrument to use ------------------------------------
 
-t2d_instrument <- "t2d_udler"
+t2d_instrument <- "t2d"
 
 # Load source data info --------------------------------------------------------
 
@@ -37,16 +39,19 @@ gwas <- data.table::fread("raw/gwas.csv",
 
 features <- gwas[gwas$feature==TRUE,]$trait
 
-for (j in c("cad","pad")) {
+for (j in c("pad")) {
 
   # Load instruments -------------------------------------------------------------
   
-  instruments <- data.table::fread(paste0("data/instruments_",j,".txt"),
+  instruments <- data.table::fread("data/instruments_all.txt",
                                    data.table = FALSE)
+  
+  # instruments <- data.table::fread(paste0("data/instruments_",j,".txt"),
+  #                                  data.table = FALSE)
   
   instruments <- instruments[instruments$exposure %in% c(features,t2d_instrument),]
   
-  for (i in unique(instruments[instruments$exposure!=t2d_instrument,]$exposure)) {
+  for (i in unique(instruments[instruments$exposure!=t2d_instrument,]$exposure)[1:45]) {
     
     analysis <- paste(i, j, sep = "_")
     print(paste0("Analysis: ",analysis))
