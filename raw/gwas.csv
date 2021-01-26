@@ -1,75 +1,81 @@
-﻿trait,trait_long,trait_udler,consortium,year,ieugwas,ieugwas_orig,source,feature,build,rsid,adjbmi
-adiponectin,adiponectin,ADIPOGen_dv1.Adiponectin,ADIPOGen,2012,ieu-a-1,ieu-a-1,,TRUE,GRCh37/hg19,TRUE,FALSE
-albumin,albumin quantile,UKBB.Albumin..quantile,Neale,2018,ukb-d-30600_irnt,ukb-d-30600_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-alp,liver enzyme ALP,LOLIPOP_eu_dv1.ALP,LOLIPOP,2011,,,https://drive.google.com/drive/folders/1oue99uE080sSoyFF84efVTLR5GK4WZ3s?usp=sharing,TRUE,NCBI36/hg18,FALSE,FALSE
-alt,liver enzyme ALT,LOLIPOP_eu_dv1.ALT,LOLIPOP,2011,,,https://drive.google.com/drive/folders/1oue99uE080sSoyFF84efVTLR5GK4WZ3s?usp=sharing,TRUE,NCBI36/hg18,FALSE,FALSE
-apoliproteina,apoliprotein A quantile,UKBB.Apoliprotein.A..quantile,Neale,2018,ukb-d-30630_irnt,ukb-d-30630_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-ast,liver enzyme AST,LOLIPOP_eu_dv1.AST,LOLIPOP,2011,,,https://drive.google.com/drive/folders/1oue99uE080sSoyFF84efVTLR5GK4WZ3s?usp=sharing,TRUE,NCBI36/hg18,FALSE,FALSE
-basophilc,basophill count,UKBB.Basophill.count,Neale,2018,,,https://www.dropbox.com/s/yqcaq3crygyi9vz/30160.gwas.imputed_v3.both_sexes.tsv.bgz,TRUE,GRCh37/hg19,FALSE,FALSE
-basophilp_f,basophill percentage (females),UKBB.Basophill.percentage,Neale,2018,,,https://www.dropbox.com/s/9ba4z5h0bvakrth/30220_irnt.gwas.imputed_v3.female.tsv.bgz,TRUE,GRCh37/hg19,FALSE,FALSE
-basophilp_m,basophill percentage (males),UKBB.Basophill.percentage,Neale,2018,,,https://www.dropbox.com/s/f8yxuces47tveof/30220_irnt.gwas.imputed_v3.male.tsv.bgz,TRUE,GRCh37/hg19,FALSE,FALSE
-bfp,body fat percentage,BFpercent_dv1.BFP,Lu,2016,ebi-a-GCST003435,ebi-a-GCST003435,,TRUE,GRCh37/hg19,TRUE,FALSE
-bmi,body mass index,GiantUKBB_eu_dv1.BMI,GIANT,2018,,,https://portals.broadinstitute.org/collaboration/giant/images/c/c8/Meta-analysis_Locke_et_al%2BUKBiobank_2018_UPDATED.txt.gz,TRUE,GRCh37/hg19,TRUE,FALSE
-cad,coronary artery disease,,CARDIoGRAM,2015,ieu-a-7,ieu-a-7,,FALSE,GRCh37/hg19,TRUE,FALSE
-calcium,calcium quantile,UKBB.Calcium..quantile,Neale,2018,ukb-d-30680_irnt,ukb-d-30680_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-cholesterol,cholesterol quantile,UKBB.Cholesterol..quantile,Neale,2018,ukb-d-30690_irnt,ukb-d-30690_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-crp,CRP,CRP_eu_dv1.CRP,Ligthart,2018,,,Email,TRUE,GRCh37/hg19,FALSE,FALSE
-dbp,diastolic blood pressure,UKBB.Diastolic.blood.pressure..automated.reading,Neale,2018,,,https://www.dropbox.com/s/1gxjaq5fr618p41/4079_irnt.gwas.imputed_v3.both_sexes.tsv.bgz,TRUE,GRCh37/hg19,FALSE,FALSE
-dbq,direct bilirubin quantile,UKBB.Direct.bilirubin..quantile,Neale,2018,ukb-d-30660_irnt,ukb-d-30660_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-erythrocytec,red blood cell erythrocyte count,UKBB.Red.blood.cell..erythrocyte..count,Neale,2018,ukb-d-30010_irnt,ukb-d-30010_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-erythrocytedw,red blood cell erythrocyte distribution width,UKBB.Red.blood.cell..erythrocyte..distribution.width,Neale,2018,ukb-d-30070_irnt,ukb-d-30070_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-esinophilc,eosinophill count,UKBB.Eosinophill.count,Neale,2018,,,https://www.dropbox.com/s/inlkin3ec1j4p92/30150.gwas.imputed_v3.both_sexes.tsv.bgz,TRUE,GRCh37/hg19,FALSE,FALSE
-fastglucose,fasting glucose,MAGIC_dv1.FG,MAGIC,2010,ebi-a-GCST000568,ieu-a-757,,TRUE,GRCh37/hg19,TRUE,FALSE
-fastinsulin,fasting insulin,MAGIC_dv2.FI,MAGIC,2012,ebi-a-GCST005185,ieu-a-774,,TRUE,GRCh37/hg19,TRUE,FALSE
-ggt,liver enzyme GGT,LOLIPOP_eu_dv1.GGT,LOLIPOP,2011,,,https://drive.google.com/drive/folders/1oue99uE080sSoyFF84efVTLR5GK4WZ3s?usp=sharing,TRUE,NCBI36/hg18,FALSE,FALSE
-glucose,glucose quantile,UKBB.Glucose..quantile,Neale,2018,ukb-d-30740_irnt,ukb-d-30740_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-glucose2hr,2 hour glucose,MAGIC_dv1.2hrG,MAGIC,2010,ebi-a-GCST000569,ieu-a-756,,TRUE,GRCh37/hg19,TRUE,FALSE
-haemoglobin,haemoglobin concentration,UKBB.Haemoglobin.concentration,Neale,2018,ukb-d-30020_irnt,ukb-d-30020_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-hba1c,HbA1c,MAGIC_eu_dv6.HBA1C,MAGIC,2010,,ieu-a-758,ftp://ftp.sanger.ac.uk/pub/magic/MAGIC_HbA1C.txt.gz,TRUE,GRCh37/hg19,TRUE,FALSE
-hdl,HDL cholesterol,GLGC_dv2.HDL,GLGC,2013,ieu-a-299,ieu-a-299,,TRUE,GRCh37/hg19,TRUE,FALSE
-height,height,GiantUKBB_eu_dv1.HEIGHT,GIANT,2018,,,https://portals.broadinstitute.org/collaboration/giant/images/6/63/Meta-analysis_Wood_et_al%2BUKBiobank_2018.txt.gz,TRUE,GRCh37/hg19,TRUE,FALSE
-hip_f_adjbmi,hip circumference (females; BMI adjusted),GIANT_eu_females_dv5.HIPCadjBMI,GIANT,2015,ieu-a-57,ieu-a-57,,TRUE,GRCh37/hg19,TRUE,TRUE
-hip_m,hip circumference (males),GIANT_eu_males_dv5.HIPC,GIANT,2015,ieu-a-53,ieu-a-53,,TRUE,GRCh37/hg19,TRUE,FALSE
-hip_m_adjbmi,hip circumference (males; BMI adjusted),GIANT_eu_males_dv5.HIPCadjBMI,GIANT,2015,ieu-a-59,ieu-a-59,,TRUE,GRCh37/hg19,TRUE,TRUE
-homa-ir,HOMA-IR,MAGIC_dv1.HOMAIR,MAGIC,2010,,ieu-a-771,ftp://ftp.sanger.ac.uk/pub/magic/MAGIC_ln_HOMA-IR.txt,TRUE,GRCh37/hg19,TRUE,FALSE
-homab,HOMA-B,MAGIC_dv1.HOMAB,MAGIC,2010,,ieu-a-770,ftp://ftp.sanger.ac.uk/pub/magic/MAGIC_ln_HOMA-B.txt,TRUE,GRCh37/hg19,TRUE,FALSE
-igf1,IGF-1 quantile,UKBB.IGF.1..quantile,Neale,2018,ukb-d-30770_irnt,ukb-d-30770_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-imf,immature reticulocyte fraction,UKBB.Immature.reticulocyte.fraction,Neale,2018,ukb-d-30280_irnt,ukb-d-30280_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-isi_adjbmi,insulin secretion index (BMI adjusted),MAGIC_dv4.ISIadjAgeSexBMI,MAGIC,2016,,,ftp://ftp.sanger.ac.uk/pub/magic/MAGIC_ISI_Model_2_AgeSexBMI.txt,TRUE,NCBI36/hg18,FALSE,TRUE
-leptin,leptin,Leptin_eu_dv1.LEP,Kilpelainen,2016,ieu-a-1003,ieu-a-1003,,TRUE,GRCh37/hg19,TRUE,FALSE
-leptin_adjbmi,leptin (BMI adjusted),Leptin_eu_dv1.LEPadjBMI,Kilpelainen,2016,ieu-a-1002,ieu-a-1002,,TRUE,GRCh37/hg19,TRUE,TRUE
-leukocyte,white blood cell leukocyte count,UKBB.White.blood.cell..leukocyte..count,Neale,2018,ukb-d-30000_irnt,ukb-d-30000_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-lipoproteina,lipoprotein A quantile,UKBB.Lipoprotein.A..quantile,Neale,2018,ukb-d-30790_irnt,ukb-d-30790_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-lymphocytec,lymphocyte count,UKBB.Lymphocyte.count,Neale,2018,ukb-d-30120_irnt,ukb-d-30120_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-lymphocytep,lymphocyte percentage,UKBB.Lymphocyte.percentage,Neale,2018,ukb-d-30180_irnt,ukb-d-30180_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-mch,mean corpuscular haemoglobin,UKBB.Mean.corpuscular.haemoglobin,Neale,2018,ukb-d-30050_irnt,ukb-d-30050_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-mchc,mean corpuscular haemoglobin concentration,UKBB.Mean.corpuscular.haemoglobin.concentration,Neale,2018,ukb-d-30060_irnt,ukb-d-30060_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-monocytec,monocyte count,UKBB.Monocyte.count,Neale,2018,ukb-d-30130_irnt,ukb-d-30130_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-monocytep,monocyte percentage,UKBB.Monocyte.percentage,Neale,2018,ukb-d-30190_irnt,ukb-d-30190_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-mptv,mean platelet thrombocyte volume,UKBB.Mean.platelet..thrombocyte..volume,Neale,2018,ukb-d-30100_irnt,ukb-d-30100_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-mrv,mean reticulocyte volume,UKBB.Mean.reticulocyte.volume,Neale,2018,ukb-d-30260_irnt,ukb-d-30260_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-neutrophilp,neutrophill percentage,UKBB.Neutrophill.percentage,Neale,2018,ukb-d-30200_irnt,ukb-d-30200_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-pad,peripheral artery disease,,MVP,2019,,,Box,FALSE,GRCh37/hg19,FALSE,FALSE
-pdw,platelet distribution width,UKBB.Platelet.distribution.width,Neale,2018,ukb-d-30110_irnt,ukb-d-30110_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-phosphate,phosphate quantile,UKBB.Phosphate..quantile,Neale,2018,ukb-d-30810_irnt,ukb-d-30810_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-plateletcrit,platelet crit,UKBB.Platelet.crit,Neale,2018,ukb-d-30090_irnt,ukb-d-30090_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-proinsulin,proinsulin,MAGIC_dv1.PI,MAGIC,2010,ebi-a-GCST001212,ieu-a-769,,TRUE,GRCh37/hg19,TRUE,FALSE
-reticulocyte,reticulocyte count,UKBB.Reticulocyte.count,Neale,2018,ukb-d-30250_irnt,ukb-d-30250_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-sbp,systolic blood pressure,UKBB.Systolic.blood.pressure..automated.reading,Neale,2018,,,https://www.dropbox.com/s/7rs0hf4evwqshaf/4080_irnt.gwas.imputed_v3.both_sexes.tsv.bgz,TRUE,GRCh37/hg19,FALSE,FALSE
-shbg,SHBG quantile,UKBB.SHBG..quantile,Neale,2018,ukb-d-30830_irnt,ukb-d-30830_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-t2d,type 2 diabetes,,DIAMANTE,2018,,,https://diagram-consortium.org/downloads.html,FALSE,GRCh37/hg19,FALSE,FALSE
-tbq,total bilirubin quantile,UKBB.Total.bilirubin..quantile,Neale,2018,ukb-d-30840_irnt,ukb-d-30840_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-testosterone_f,testosterone quantile (females),UKBB.Testosterone..quantile,Neale,2018,,,https://www.dropbox.com/s/g9ahwvs28ewnk2q/30850_irnt.gwas.imputed_v3.female.tsv.bgz,TRUE,GRCh37/hg19,FALSE,FALSE
-testosterone_m,testosterone quantile (males),UKBB.Testosterone..quantile,Neale,2018,,,https://www.dropbox.com/s/vdrhyeyphv9bb6o/30850_irnt.gwas.imputed_v3.male.tsv.bgz,TRUE,GRCh37/hg19,FALSE,FALSE
-tg,triglycerides,GLGC_dv2.TG,GLGC,2013,ieu-a-302,ieu-a-302,,TRUE,GRCh37/hg19,TRUE,FALSE
-tpq,total protein quantile,UKBB.Total.protein..quantile,Neale,2018,ukb-d-30860_irnt,ukb-d-30860_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-urate,urate,GUGC_eu_dv1.Urate,GUGC,2015,ieu-a-786,ieu-a-786,,TRUE,GRCh37/hg19,TRUE,FALSE
-urea,urea quantile,UKBB.Urea..quantile,Neale,2018,ukb-d-30670_irnt,ukb-d-30670_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-vitamind,vitamin D quantile,UKBB.Vitamin.D..quantile,Neale,2018,ukb-d-30890_irnt,ukb-d-30890_irnt,,TRUE,GRCh37/hg19,TRUE,FALSE
-waist_f,waist circumference (females),GIANT_eu_females_dv5.WAIST,GIANT,2015,ieu-a-63,ieu-a-63,,TRUE,GRCh37/hg19,TRUE,FALSE
-waist_f_adjbmi,waist circumference (females; BMI adjusted),GIANT_eu_females_dv5.WAISTadjBMI,GIANT,2015,ieu-a-69,ieu-a-69,,TRUE,GRCh37/hg19,TRUE,TRUE
-waist_m_adjbmi,waist circumference (males; BMI adjusted),GIANT_eu_males_dv5.WAISTadjBMI,GIANT,2015,ieu-a-71,ieu-a-71,,TRUE,GRCh37/hg19,TRUE,TRUE
-whr_f,waist-hip-ratio (females),GIANT_eu_females_dv5.WHR,GIANT,2015,ieu-a-74,ieu-a-74,,TRUE,GRCh37/hg19,TRUE,FALSE
-whr_f_adjbmi,waist-hip-ratio (females; BMI adjusted),GIANT_eu_females_dv5.WHRadjBMI,GIANT,2015,ieu-a-81,ieu-a-81,,TRUE,GRCh37/hg19,TRUE,TRUE
-whr_m,waist-hip-ratio (males),GIANT_eu_males_dv5.WHR,GIANT,2015,ieu-a-77,ieu-a-77,,TRUE,GRCh37/hg19,TRUE,FALSE
-whr_m_adjbmi,waist-hip-ratio (males; BMI adjusted),GIANT_eu_males_dv5.WHRadjBMI,GIANT,2015,ieu-a-75,ieu-a-75,,TRUE,GRCh37/hg19,TRUE,TRUE
+﻿trait,trait_long,ieugwas,source,year,author,consortium,sex,pmid,population,sample_size,nsnp,build,unit,ncase,ncontrol
+cad,coronary heart disease,ieu-a-7,outcome,2015,Nikpay,CARDIoGRAMplusC4D,Males and Females,PMID26343387,Mixed,184305,9455779,HG19/GRCh37,log odds,60801,123504
+pad,peripheral artery disease,NA,outcome,2019,Klarin,MVP,Males and Females,PMID31285632,European,NA,NA,HG19/GRCh37,log odds,31307,211753
+t2d,type 2 diabetes,NA,outcome,2018,Mahajan,DIAMANTE,Males and Females,PMID30297969,European,NA,NA,HG19/GRCh37,log odds,74124,824006
+alp,liver enzyme ALP,NA,original_feature,2011,Chambers,LOLIPOP,Males and Females,PMID22001757,European,NA,NA,HG18/NCBI36,NA,NA,NA
+alt,liver enzyme ALT,NA,original_feature,2011,Chambers,LOLIPOP,Males and Females,PMID22001757,European,NA,NA,HG18/NCBI36,NA,NA,NA
+ast,liver enzyme AST,NA,original_feature,2011,Chambers,LOLIPOP,Males and Females,PMID22001757,European,NA,NA,HG18/NCBI36,NA,NA,NA
+ggt,liver enzyme GGT,NA,original_feature,2011,Chambers,LOLIPOP,Males and Females,PMID22001757,European,NA,NA,HG18/NCBI36,NA,NA,NA
+glucose2hr,2-hour glucose challenge,ebi-a-GCST000569,original_feature,2010,Saxena,MAGIC,Males and Females,PMID20081857,Mixed,15234,2392760,HG19/GRCh37,NA,NA,NA
+proinsulin,proinsulin levels,ebi-a-GCST001212,original_feature,2011,Strawbridge,MAGIC,Males and Females,PMID21873549,European,10701,2479861,HG19/GRCh37,NA,NA,NA
+homa-ir,HOMA-IR,ebi-a-GCST005179,original_feature,2010,Dupuis,MAGIC,Males and Females,PMID20081858,European,37037,2435028,HG19/GRCh37,NA,NA,NA
+adiponectin,adiponectin,ieu-a-1,original_feature,2012,Dastani,ADIPOGen,Males and Females,PMID22479202,Mixed,39883,2675209,HG19/GRCh37,ln(mg/dL),NA,NA
+leptin,leptin,ieu-a-1003,original_feature,2016,Kilpelainen,NA,Males and Females,PMID26833098,European,32161,2473865,HG19/GRCh37,log ng/ml,NA,NA
+hdl,HDL cholesterol,ieu-a-299,original_feature,2013,Willer,GLGC,Males and Females,PMID24097068,Mixed,187167,2447442,HG19/GRCh37,SD (mg/dL),NA,NA
+cholesterol,total cholesterol,ieu-a-301,original_feature,2013,Willer,GLGC,Males and Females,PMID24097068,Mixed,187365,2446982,HG19/GRCh37,SD (mg/dL),NA,NA
+tg,triglycerides,ieu-a-302,original_feature,2013,Willer,GLGC,Males and Females,PMID24097068,Mixed,177861,2439433,HG19/GRCh37,SD (mg/dL),NA,NA
+homab,HOMA-B,ebi-a-GCST005180,original_feature,2010,Dupuis,MAGIC,Males and Females,PMID20081858,European,36466,2429924,HG19/GRCh37,NA,NA,NA
+fastinsulin,fasting blood insulin,ebi-a-GCST005185,original_feature,2012,Manning,NA,Males and Females,PMID22581228,European,51750,2598774,HG19/GRCh37,NA,NA,NA
+fastglucose,fasting blood glucose,ebi-a-GCST005186,original_feature,2012,Manning,NA,Males and Females,PMID22581228,European,58074,2599409,HG19/GRCh37,NA,NA,NA
+albumin,urinary albumin excretion,ebi-a-GCST006586,original_feature,2018,Haas,ICBP,Males and Females,PMID30220432,European,382500,11684850,HG19/GRCh37,NA,NA,NA
+basophilc,basophil cell count,ieu-b-29,original_feature,2020,Vuckovic,Blood Cell Consortium,Males and Females,PMID32888494,European,563946,NA,HG19/GRCh37,NA,NA,NA
+height,height,ukb-b-10787,original_feature,2018,Elsworth,MRC-IEU,Males and Females,NA,European,461950,9851867,HG19/GRCh37,SD,NA,NA
+sbp,systolic blood pressure,ukb-b-20175,original_feature,2018,Elsworth,MRC-IEU,Males and Females,NA,European,436419,9851867,HG19/GRCh37,SD,NA,NA
+dbp,diastolic blood pressure,ukb-b-7992,original_feature,2018,Elsworth,MRC-IEU,Males and Females,NA,European,436424,9851867,HG19/GRCh37,SD,NA,NA
+bfp,body fat percentage,ukb-b-8909,original_feature,2018,Elsworth,MRC-IEU,Males and Females,NA,European,454633,9851867,HG19/GRCh37,SD,NA,NA
+leukocyte,leukocyte count,ukb-d-30000_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,350470,13586282,HG19/GRCh37,SD,NA,NA
+erythrocytec,erythrocyte count,ukb-d-30010_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,350475,13586289,HG19/GRCh37,SD,NA,NA
+haemoglobin,haemoglobin concentration,ukb-d-30020_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,350474,13586287,HG19/GRCh37,SD,NA,NA
+mch,MCH,ukb-d-30050_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,350472,13586285,HG19/GRCh37,SD,NA,NA
+mchc,MCHC,ukb-d-30060_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,350468,13586285,HG19/GRCh37,SD,NA,NA
+erythrocytedw,erythrocyte distribution width,ukb-d-30070_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,350473,13586288,HG19/GRCh37,SD,NA,NA
+plateletcrit,Platelet crit,ukb-d-30090_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,350471,13586285,HG19/GRCh37,SD,NA,NA
+mptv,mean thrombocyte volume,ukb-d-30100_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,350470,13586285,HG19/GRCh37,SD,NA,NA
+pdw,platelet distribution width,ukb-d-30110_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,350470,13586285,HG19/GRCh37,SD,NA,NA
+lymphocytep,lymphocyte percentage,ukb-d-30180_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,349861,13586283,HG19/GRCh37,SD,NA,NA
+monocytep,monocyte percentage,ukb-d-30190_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,349861,13586283,HG19/GRCh37,SD,NA,NA
+neutrophilp,neutrophill percentage,ukb-d-30200_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,349861,13586283,HG19/GRCh37,SD,NA,NA
+reticulocyte,reticulocyte count,ukb-d-30250_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,344729,13586218,HG19/GRCh37,SD,NA,NA
+mrv,Mean reticulocyte volume,ukb-d-30260_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,344728,13586217,HG19/GRCh37,SD,NA,NA
+imf,IMF,ukb-d-30280_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,344728,13586217,HG19/GRCh37,SD,NA,NA
+apoliproteina,apoliprotein A,ukb-d-30630_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13585234,HG19/GRCh37,SD,NA,NA
+dbq,direct bilirubin,ukb-d-30660_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13584679,HG19/GRCh37,SD,NA,NA
+urea,urea,ukb-d-30670_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13586012,HG19/GRCh37,SD,NA,NA
+calcium,calcium,ukb-d-30680_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13585309,HG19/GRCh37,SD,NA,NA
+glucose,glucose,ukb-d-30740_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13585279,HG19/GRCh37,SD,NA,NA
+hba1c,HbA1c,ukb-d-30750_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13586180,HG19/GRCh37,SD,NA,NA
+igf1,IGF-1,ukb-d-30770_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13586000,HG19/GRCh37,SD,NA,NA
+lipoproteina,lipoprotein A,ukb-d-30790_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13583854,HG19/GRCh37,SD,NA,NA
+phosphate,phosphate,ukb-d-30810_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13585254,HG19/GRCh37,SD,NA,NA
+shbg,SHBG,ukb-d-30830_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13585247,HG19/GRCh37,SD,NA,NA
+tbq,total bilirubin,ukb-d-30840_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13585986,HG19/GRCh37,SD,NA,NA
+tpq,total protein,ukb-d-30860_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13585298,HG19/GRCh37,SD,NA,NA
+urate,urate,ukb-d-30880_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13585994,HG19/GRCh37,SD,NA,NA
+vitamind,vitamin D,ukb-d-30890_irnt,original_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13585763,HG19/GRCh37,SD,NA,NA
+monocytec,monocyte cell count,ieu-b-31,original_feature,2020,Vuckovic,Blood Cell Consortium,Males and Females,PMID32888494,European,563946,NA,HG19/GRCh37,NA,NA,NA
+lymphocytec,lymphocyte cell count,ieu-b-32,original_feature,2020,Vuckovic,Blood Cell Consortium,Males and Females,PMID32888494,European,563946,NA,HG19/GRCh37,NA,NA,NA
+crp,CRP level,ieu-b-35,original_feature,2018,Ligthart,NA,Males and Females,PMID30388399,European,204402,2414379,HG19/GRCh37,NA,NA,NA
+bmi,body mass index,ieu-b-40,original_feature,2018,Yengo,GIANT,Males and Females,PMID30124842,European,681275,2336260,HG19/GRCh37,NA,NA,NA
+isi,insulin secretion rate,ebi-a-GCST004488,new_feature,2017,Wood,NA,Males and Females,PMID28490609,European,527,6919421,HG19/GRCh37,NA,NA,NA
+whr,waist-to-hip ratio,ieu-a-72,new_feature,2015,Shungin,GIANT,Males and Females,PMID25673412,Mixed,224459,2562516,HG19/GRCh37,SD,NA,NA
+hip,hip circumference,ukb-b-15590,new_feature,2018,Elsworth,MRC-IEU,Males and Females,NA,European,462117,9851867,HG19/GRCh37,SD,NA,NA
+waist,waist circumference,ukb-b-9405,new_feature,2018,Elsworth,MRC-IEU,Males and Females,NA,European,462166,9851867,HG19/GRCh37,SD,NA,NA
+esinophill,eosinophill percentage,ukb-d-30210_irnt,new_feature,2018,Neale,Neale lab,Males and Females,NA,European,349861,13586283,HG19/GRCh37,SD,NA,NA
+testosterone,testosterone,ukb-d-30850_irnt,new_feature,2018,Neale,Neale lab,Males and Females,NA,European,NA,13585069,HG19/GRCh37,SD,NA,NA
+basophilp_f,basophill percentage (females),NA,exclude_feature,,,,,,,,,,,,
+basophilp_m,basophill percentage (males),NA,exclude_feature,,,,,,,,,,,,
+esinophilc,eosinophill count,NA,exclude_feature,,,,,,,,,,,,
+hip_f_adjbmi,hip circumference (females; BMI adjusted),NA,exclude_feature,,,,,,,,,,,,
+hip_m,hip circumference (males),NA,exclude_feature,,,,,,,,,,,,
+hip_m_adjbmi,hip circumference (males; BMI adjusted),NA,exclude_feature,,,,,,,,,,,,
+isi_adjbmi,insulin secretion index (BMI adjusted),NA,exclude_feature,,,,,,,,,,,,
+leptin_adjbmi,leptin (BMI adjusted),NA,exclude_feature,,,,,,,,,,,,
+testosterone_f,testosterone quantile (females),NA,exclude_feature,,,,,,,,,,,,
+testosterone_m,testosterone quantile (males),NA,exclude_feature,,,,,,,,,,,,
+waist_f,waist circumference (females),NA,exclude_feature,,,,,,,,,,,,
+waist_f_adjbmi,waist circumference (females; BMI adjusted),NA,exclude_feature,,,,,,,,,,,,
+waist_m_adjbmi,waist circumference (males; BMI adjusted),NA,exclude_feature,,,,,,,,,,,,
+whr_f,waist-hip-ratio (females),NA,exclude_feature,,,,,,,,,,,,
+whr_f_adjbmi,waist-hip-ratio (females; BMI adjusted),NA,exclude_feature,,,,,,,,,,,,
+whr_m,waist-hip-ratio (males),NA,exclude_feature,,,,,,,,,,,,
+whr_m_adjbmi,waist-hip-ratio (males; BMI adjusted),NA,exclude_feature,,,,,,,,,,,,

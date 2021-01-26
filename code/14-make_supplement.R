@@ -33,7 +33,7 @@ openxlsx::writeData(wb, "ST2", ST2)
 
 # Supplementary Table 3 - Multivariable estimates ------------------------------
 
-ST3 <- data.table::fread("output/all_results.csv", data.table = FALSE)
+ST3 <- data.table::fread("output/results.csv", data.table = FALSE)
 ST3 <- ST3[ST3$effect %in% c("direct","indirect"),c("analysis","effect","exposure","outcome","estimate","se","pval")]
 ST3$exposure_other <- gsub("_.*","",ST3$analysis)
 ST3$exposure_other <- ifelse(ST3$exposure==ST3$exposure_other, "t2d", ST3$exposure_other)
@@ -53,7 +53,7 @@ openxlsx::writeData(wb, "ST3", ST3)
 
 # Supplementary Table 4 - Egger intercept test ---------------------------------
 
-ST4 <- data.table::fread("output/uvmr_pleiotropy.csv", data.table = FALSE)
+ST4 <- data.table::fread("output/plei.csv", data.table = FALSE)
 ST4 <- ST4[(ST4$outcome=="t2d") | (ST4$exposure %in% c(t2d_evidence,"t2d") & ST4$outcome %in% c("cad","pad")),c("exposure","outcome","egger_intercept","se","pval")]
 ST4 <- merge(ST4, ST1[,c("trait","trait_long")], by.x = "exposure", by.y = "trait", all.y = TRUE)
 ST4$exposure <- ST4$trait_long
@@ -68,8 +68,8 @@ openxlsx::writeData(wb, "ST4", ST4)
 
 # Supplementary Table 5 - I squared statistics for MVMR ------------------------
 
-ST5 <- data.table::fread("output/uvmr_results.csv", data.table = FALSE)
-ST5 <- ST5[,c("exposure","outcome","Isq")]
+ST5 <- data.table::fread("output/results.csv", data.table = FALSE)
+ST5 <- ST5[,c("exposure","outcome","nsnp","Isq")]
 ST5 <- unique(ST5)
 ST5 <- merge(ST5, ST1[,c("trait","trait_long")], by.x = "exposure", by.y = "trait", all.x = TRUE)
 ST5$exposure <- ST5$trait_long

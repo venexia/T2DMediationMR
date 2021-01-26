@@ -13,6 +13,9 @@ gwas <- data.table::fread("raw/gwas.csv",
                           stringsAsFactors = FALSE,
                           data.table = FALSE)
 
+gwas <- gwas[gwas$source!="exclude_feature",]
+rownames(gwas) <- NULL
+
 # Load instruments -------------------------------------------------------------
 
 instruments <- data.table::fread("data/instruments_all.txt", data.table = FALSE)
@@ -27,11 +30,11 @@ features <- intersect(instruments$exposure, gwas$trait)
 
 # Perform UVMR -----------------------------------------------------------------
 
-results <- data.table::fread("output/results_201126.csv", data.table = FALSE)
+results <- data.table::fread("output/results.csv", data.table = FALSE)
 
-plei <- data.table::fread("output/plei_201126.csv", data.table = FALSE)
+plei <- data.table::fread("output/plei.csv", data.table = FALSE)
 
-for (i in features[16:71]) {
+for (i in features[59]) {
   
   for (j in c("t2d","pad","cad")) {
     
@@ -51,6 +54,8 @@ for (i in features[16:71]) {
       
       # Outcome > feature effects ----------------------------------------------
       
+      if (!(i %in% c("t2d","pad","cad"))) { # To avoid duplication as these phenotypes are in the feature list so get tested anyway  
+      
       tmp <- uvmr(j, i)
       
       tmp[[1]]$id.exposure <- NULL
@@ -61,12 +66,13 @@ for (i in features[16:71]) {
       tmp[[2]]$id.outcome <- NULL
       plei <- rbind(plei, tmp[[2]])
       
+      }
+      
     }
     
   }
   
 }
-
 
 data.table::fwrite(results,"output/results.csv")
 data.table::fwrite(plei,"output/plei.csv")

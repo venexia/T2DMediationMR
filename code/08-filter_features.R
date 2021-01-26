@@ -1,48 +1,55 @@
 rm(list=ls())
 graphics.off()
 
-# Set p-value threshold for features to progress to next analysis --------------
+# Set FDR threshold for features to progress to next analysis ------------------
 
 threshold <- 0.05
+outcomes <- c("t2d","pad","cad")
 
 # Load univariate results ------------------------------------------------------
 
-uvmr <- data.table::fread("output/uvmr_results.csv", data.table = FALSE)
+df <- data.table::fread("output/results.csv",
+                        select = c("exposure", "outcome", "method","pval","exclude"),
+                        data.table = FALSE)
 
-# Load instruments -------------------------------------------------------------
+df <- df[df$method %in% c("Inverse variance weighted","Wald ratio") & df$exclude==FALSE,]
 
-instruments <- data.table::fread("data/instruments_all.txt", data.table = FALSE)
+df$analysis <- ""
 
-for (i in c("cad","pad")) {
+df$analysis <- ifelse(df$exposure=="t2d" & !(df$outcome %in% outcomes),
+                      "t2d_feature",
+                      df$analysis)
 
-  # Restrict to relavant methods, exposures and outcomes -----------------------
+df$analysis <- ifelse(!(df$exposure %in% outcomes) & df$outcome=="t2d",
+                      "feature_t2d",
+                      df$analysis)
 
-  df <- uvmr[uvmr$method %in% c("Inverse variance weighted","Wald ratio") &
-           !(uvmr$exposure %in% c("t2d","t2d_udler","cad","pad")) &
-           uvmr$outcome %in% c("t2d",i),
-         c("exposure","outcome","pval")]
+df$analysis <- ifelse(!(df$exposure %in% outcomes) & df$outcome=="cad",
+                      "feature_cad",
+                      df$analysis)
 
-  # Make outcome name generic --------------------------------------------------
-  
-  df$outcome <- ifelse(df$outcome==i,"outcome",df$outcome)
-  
-  # Convert data to wide -------------------------------------------------------
-  
-  df <- tidyr::pivot_wider(df, 
-                           names_from = "outcome", 
-                           values_from = c("pval"))
+df$analysis <- ifelse(!(df$exposure %in% outcomes) & df$outcome=="pad",
+                      "feature_pad",
+                      df$analysis)
 
+df <- df[df$analysis!="",]
 
-  # Apply thresholds -----------------------------------------------------------
-  
-  df <- df[df$t2d<threshold & df$outcome<threshold,]
-  
-  # Restrict instruments -------------------------------------------------------
-  
-  instruments_restricted <- instruments[instruments$exposure %in% c(df$exposure,"t2d","t2d_udler","cad","pad"),]
+df$feature <- ifelse(df$analysis=="t2d_feature",df$outcome,df$exposure)
 
-  # Save -----------------------------------------------------------------------
-  
-  data.table::fwrite(instruments_restricted,paste0("data/instruments_",i,".txt"))
+df <- df[,c("feature","analysis","pval")]
 
+df <- tidyr::pivot_wider(df, names_from = "analysis", values_from = "pval")
+
+for (i in c("feature_t2d","t2d_feature","feature_pad","feature_cad")) {
+  cols <- colnames(df)
+  tmp <- data.frame(cols = df[,i])
+  colnames(tmp) <- c("pval")
+  df$BH <- stats::p.adjust(tmp$pval, method = "BH")
+  df$evidence <- df$BH<threshold
+  colnames(df) <- c(cols,paste0(i,c("_adjust","_evidence")))
 }
+
+df <- df[,c("feature","feature_t2d_evidence","t2d_feature_evidence","feature_pad_evidence","feature_cad_evidence")]
+df <- na.omit(df)
+
+data.table::fwrite(df,"output/evidence_summary.csv")

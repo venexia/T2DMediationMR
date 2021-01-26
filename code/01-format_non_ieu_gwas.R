@@ -5,25 +5,114 @@ graphics.off()
 
 source("code/specify_paths.R", echo = TRUE)
 
-# Source functions -------------------------------------------------------------
+# List GWAS with NCBI36/hg18 genome annotation ---------------------------------
 
-source("code/fn-liftover.R", echo = TRUE)
+update <- c("alp","alt","ast","ggt")
 
-# Load feature data ------------------------------------------------------------
+# Create empty liftover input file ---------------------------------------------
 
-gwas <- data.table::fread("raw/gwas.csv")
+liftover_in <- NULL
 
-# Restrict to GWAS in IEU GWAS database ----------------------------------------
+# Prepare liftover input file by looping over eligible GWAS --------------------
 
-gwas <- gwas[gwas$ieugwas=="",]
-
-# Format LOLIPOP consortium GWAS -----------------------------------------------
-
-for (i in gwas[gwas$consortium=="LOLIPOP",]$trait) {
+for (i in update) {
+  
+  ## Load GWAS with NCBI36/hg18 genome annotation ------------------------------
   
   tmp <- data.table::fread(paste0("raw/gwas-",i,".txt.gz"),
                            data.table = FALSE,
                            stringsAsFactors = FALSE)
+  
+  ## Keep copy of GWAS to save reloading later ---------------------------------
+  
+  assign(i,tmp)
+  
+  ## Restrict columns to genome annotation -------------------------------------
+  
+  tmp <- tmp[,c("Chr36","Position36")]
+  colnames(tmp) <- c("chr","end")
+  tmp <- tmp[tmp$end>0,]
+  
+  ## Derive start positions ----------------------------------------------------
+  
+  tmp$start <- tmp$end - 1
+  
+  ## Format for liftover software -----------------------------------------------
+  
+  tmp <- na.omit(tmp)
+  tmp$id36 <- paste0("chr",tmp$chr,":",tmp$start,"-",tmp$end)
+  tmp[,c("chr","start","end")] <- NULL
+
+  ## Apend to liftover input file ----------------------------------------------
+  
+  liftover_in <- rbind(liftover_in,tmp)
+  
+}
+
+# Remove duplicates from liftover input file and save --------------------------
+
+liftover_in <- unique(liftover_in)
+data.table::fwrite(liftover_in, "data/liftover_input.txt", col.names = FALSE)
+
+# ---------------------------------------------------------------------------------------- #
+# Lift genome annotations to GRCh27/hg19 using https://genome.ucsc.edu/cgi-bin/hgLiftOver  #
+# ---------------------------------------------------------------------------------------- #
+
+# Load liftover output ---------------------------------------------------------
+
+liftover_out <- data.table::fread("raw/liftover_output.bed",
+                                  header = FALSE,
+                                  col.names = c("id37"),
+                                  stringsAsFactors = FALSE,
+                                  data.table = FALSE)
+
+# Load liftover errors ---------------------------------------------------------
+
+liftover_err <- data.table::fread("raw/liftover_errors.txt",
+                                  header = FALSE,
+                                  stringsAsFactors = FALSE,
+                                  data.table = FALSE)
+
+# Match liftover error to liftover input ---------------------------------------
+
+liftover_err$V2 <- seq(1,2,1)
+liftover_err$V2 <- ifelse(liftover_err$V2==1,"error","id36")
+liftover_err$V3 <- rep(seq(1,nrow(liftover_err)/2,1),each = 2)
+liftover_err <- tidyr::pivot_wider(liftover_err, names_from = "V2", values_from = "V1")
+liftover_err$V3 <- NULL
+
+# Remove IDs with error from liftover input ------------------------------------
+
+liftover_in <- data.frame(liftover_in[!(liftover_in$id36 %in% liftover_err$id36),],
+                          stringsAsFactors = FALSE)
+
+colnames(liftover_in) <- c("id36")
+
+# Create liftover mapping file -------------------------------------------------
+
+map <- cbind(liftover_in,liftover_out)
+
+# Reformat mapping file --------------------------------------------------------
+
+map$chr36 <- gsub(":.*","",gsub("chr","",map$id36))
+map$pos36 <- gsub(".*-","",map$id36)
+
+map$chr <- gsub(":.*","",gsub("chr","",map$id37))
+map$pos <- gsub(".*-","",map$id37)
+
+map <- map[,c("chr36","pos36","chr","pos")]
+
+data.table::fwrite(map, "data/liver_enzyme_snps.csv")
+
+# Apply map to each GWAS -------------------------------------------------------
+
+for (i in update) {
+  
+  ## Load GWAS -----------------------------------------------------------------
+  
+  tmp <- get(i)
+  
+  ## Reformat GWAS -------------------------------------------------------------
   
   tmp$exposure <- i
   
@@ -39,154 +128,16 @@ for (i in gwas[gwas$consortium=="LOLIPOP",]$trait) {
                      "samplesize",
                      "exposure")
   
-  map <- liftover(trait = i)
-  tmp <- merge(tmp, map, by = c("chr36","pos36"))
+  # Merge GWAS with mapping file -----------------------------------------------
   
+  tmp <- merge(tmp, map, by = c("chr36","pos36"))
   tmp[,c("chr36","pos36")] <- NULL
   
-  data.table::fwrite(tmp,paste0("data/gwas-",i,".txt"))
-  
-}
-
-# Format Neale lab GWAS --------------------------------------------------------
-
-for (i in gwas[gwas$consortium=="Neale",]$trait) {
-  
-  system(paste0("gunzip -c raw/gwas-",i,".tsv.bgz > data/gwas-",i,".txt"))
-  
-  tmp <- data.table::fread(paste0("data/gwas-",i,".txt"),
-                           data.table = FALSE,
-                           stringsAsFactors = FALSE)
-  
-  tmp$exposure <- i
-  
-  tmp <- tidyr::separate(data = tmp,
-                         col = variant,
-                         into = c("chr","pos","other_allele","effect_allele"),
-                         sep = ":",
-                         remove = FALSE)
-  
-  tmp <- tmp[,c("variant","chr","pos",
-                "effect_allele","other_allele",
-                "beta","se","pval",
-                "exposure")]
-  
-  colnames(tmp) <- c("SNP","chr","pos",
-                     "effect_allele","other_allele",
-                     "beta","se","pval",
-                     "exposure")
+  # Save GWAS with GRCh27/hg19 genome annotation -------------------------------
   
   data.table::fwrite(tmp,paste0("data/gwas-",i,".txt"))
   
 }
-
-# Format GIANT consortium GWAS -------------------------------------------------
-
-for (i in gwas[gwas$consortium=="GIANT",]$trait) {
-  
-  tmp <- data.table::fread(paste0("raw/gwas-",i,".txt.gz"),
-                           data.table = FALSE,
-                           stringsAsFactors = FALSE)
-  
-  tmp$exposure <- i
-  
-  tmp <- tmp[,c("SNP","CHR","POS",
-                "Tested_Allele","Other_Allele","Freq_Tested_Allele_in_HRS",
-                "BETA","SE","P",
-                "N",
-                "exposure")]
-  
-  colnames(tmp) <- c("SNP","chr","pos",
-                     "effect_allele","other_allele","eaf",
-                     "beta","se","pval",
-                     "samplesize",
-                     "exposure")
-  
-  data.table::fwrite(tmp,paste0("data/gwas-",i,".txt"))
-  
-}
-
-# Format MAGIC consortium GWAS -------------------------------------------------
-
-for (i in gwas[gwas$consortium=="MAGIC" & gwas$trait!="isi_adjbmi",]$trait) {
-  
-  tmp <- data.table::fread(paste0("raw/gwas-",i,".txt"),
-                           data.table = FALSE,
-                           stringsAsFactors = FALSE)
-  
-  tmp$exposure <- i
-  
-  tmp <- tmp[,c("snp",
-                "effect_allele","other_allele",
-                "effect","stderr","pvalue",
-                "exposure")]
-  
-  colnames(tmp) <- c("SNP",
-                     "effect_allele","other_allele",
-                     "beta","se","pval",
-                     "exposure")
-  
-  data.table::fwrite(tmp,paste0("data/gwas-",i,".txt"))
-  
-}
-
-# Format crp GWAS --------------------------------------------------------------
-
-tmp <- data.table::fread("raw/gwas-crp.txt",
-                         data.table = FALSE,
-                         stringsAsFactors = FALSE)
-
-tmp$exposure <- "crp"
-
-tmp <- tidyr::separate(data = tmp,
-                       col = VAR_ID,
-                       into = c("chr","pos","ref_allele","alt_allele"),
-                       sep = "_",
-                       remove = FALSE)
-
-tmp$other_allele <- NA
-tmp$other_allele <- ifelse(tmp$Effect_Allele_PH==tmp$ref_allele,tmp$alt_allele,tmp$other_allele)
-tmp$other_allele <- ifelse(tmp$Effect_Allele_PH==tmp$alt_allele,tmp$ref_allele,tmp$other_allele)
-
-tmp <- tmp[,c("VAR_ID","chr","pos",
-              "Effect_Allele_PH","other_allele",
-              "BETA","SE","P_VALUE",
-              "exposure")]
-
-colnames(tmp) <- c("SNP","chr","pos",
-                   "effect_allele","other_allele",
-                   "beta","se","pval",
-                   "exposure")
-
-data.table::fwrite(tmp,"data/gwas-crp.txt")
-
-# Format isi GWAS --------------------------------------------------------------
-
-tmp <- data.table::fread("raw/gwas-isi_adjbmi.txt",
-                         data.table = FALSE,
-                         stringsAsFactors = FALSE)
-
-tmp$exposure <- "isi_adjbmi"
-
-tmp <- tmp[,c("chr_build36","pos_build36",
-              "effect_allele","other_allele",
-              "effect","stderr","pvalue",
-              "exposure")]
-
-colnames(tmp) <- c("chr36","pos36",
-                   "effect_allele","other_allele",
-                   "beta","se","pval",
-                   "exposure")
-
-map <- liftover(trait = "isi_adjbmi")
-tmp <- merge(tmp, map, by = c("chr36","pos36"))
-
-tmp[,c("chr36","pos36")] <- NULL
-
-tmp$effect_allele <- toupper(tmp$effect_allele)
-tmp$other_allele <- toupper(tmp$other_allele)
-
-data.table::fwrite(tmp,"data/gwas-isi_adjbmi.txt")
 
 # Format t2d GWAS --------------------------------------------------------------
 

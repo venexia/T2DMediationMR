@@ -6,8 +6,6 @@ T2DSubtypesMR.Rproj
 raw/*
 data/*
 output/*
-liftover/*
-snpnexus/*
 .DS_Store
 code/specify_paths.R
 tmp/
@@ -17,5 +15,4 @@ plink_mac_20200428/
 !raw/gwas.csv
 !data/README.md
 !output/README.md
-!liftover/README.md
-!snpnexus/README.md
+backup.zip

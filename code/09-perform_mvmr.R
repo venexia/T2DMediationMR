@@ -10,26 +10,25 @@ source("code/specify_paths.R", echo = TRUE)
 source("code/fn-extract_snps.R", echo = TRUE)
 source("code/fn-harmonise_snps.R", echo = TRUE)
 
+# Load filtered features list --------------------------------------------------
+
+features <- data.table::fread("output/evidence_summary.csv", data.table = FALSE)
+features <- features[(features$feature_t2d_evidence+features$t2d_feature_evidence)==1 & (features$feature_pad_evidence+features$feature_cad_evidence)>0,]
+
 # Specify results data frame ---------------------------------------------------
 
-# results <- data.frame(analysis = character(),
-#                       exposure = character(),
-#                       outcome = character(),
-#                       effect = character(),
-#                       estimate = numeric(),
-#                       se = numeric(),
-#                       pval = numeric(),
-#                       snps = character(),
-#                       Q_strength = numeric(),
-#                       Q_valid = numeric(),
-#                       condF = numeric(),
-#                       stringsAsFactors = FALSE)
-
-results <- data.table::fread("output/mvmr_results.csv", data.table = FALSE)
-
-# Specify type 2 diabetes instrument to use ------------------------------------
-
-t2d_instrument <- "t2d"
+results <- data.frame(analysis = character(),
+                      exposure = character(),
+                      outcome = character(),
+                      effect = character(),
+                      estimate = numeric(),
+                      se = numeric(),
+                      pval = numeric(),
+                      snps = character(),
+                      Q_strength = numeric(),
+                      Q_valid = numeric(),
+                      condF = numeric(),
+                      stringsAsFactors = FALSE)
 
 # Load source data info --------------------------------------------------------
 
@@ -37,39 +36,40 @@ gwas <- data.table::fread("raw/gwas.csv",
                           stringsAsFactors = FALSE,
                           data.table = FALSE)
 
-features <- gwas[gwas$feature==TRUE,]$trait
+for (j in c("pad","cad")) {
 
-for (j in c("pad")) {
-
-  # Load instruments -------------------------------------------------------------
+  # Determine features of interest ---------------------------------------------
+  
+  tmp <- features[,c("feature",paste0("feature_",j,"_evidence"))]
+  colnames(tmp) <- c("feature","evidence")
+  tmp <- tmp[tmp$evidence==TRUE,]$feature
+  
+  # Load instruments -----------------------------------------------------------
   
   instruments <- data.table::fread("data/instruments_all.txt",
                                    data.table = FALSE)
   
-  # instruments <- data.table::fread(paste0("data/instruments_",j,".txt"),
-  #                                  data.table = FALSE)
+  instruments <- instruments[instruments$exposure %in% c(tmp,"t2d"),]
   
-  instruments <- instruments[instruments$exposure %in% c(features,t2d_instrument),]
-  
-  for (i in unique(instruments[instruments$exposure!=t2d_instrument,]$exposure)[1:45]) {
+  for (i in tmp) {
     
     analysis <- paste(i, j, sep = "_")
     print(paste0("Analysis: ",analysis))
   
     # List MVMR instrument SNPs ----------------------------------------------
     
-    snplist <- unique(instruments[instruments$exposure %in% c(i,t2d_instrument),
+    snplist <- unique(instruments[instruments$exposure %in% c(i,"t2d"),
                            c("SNP","chrpos")])
     
     snplist$instrument <- ""
-    snplist$instrument <- ifelse(snplist$SNP %in% instruments[instruments$exposure==i,]$SNP & snplist$SNP %in% instruments[instruments$exposure==t2d_instrument,]$SNP,"both",snplist$instrument)
-    snplist$instrument <- ifelse(snplist$SNP %in% instruments[instruments$exposure==i,]$SNP & !(snplist$SNP %in% instruments[instruments$exposure==t2d_instrument,]$SNP),"feature",snplist$instrument)
-    snplist$instrument <- ifelse(!(snplist$SNP %in% instruments[instruments$exposure==i,]$SNP) & snplist$SNP %in% instruments[instruments$exposure==t2d_instrument,]$SNP,"t2d",snplist$instrument)
+    snplist$instrument <- ifelse(snplist$SNP %in% instruments[instruments$exposure==i,]$SNP & snplist$SNP %in% instruments[instruments$exposure=="t2d",]$SNP,"both",snplist$instrument)
+    snplist$instrument <- ifelse(snplist$SNP %in% instruments[instruments$exposure==i,]$SNP & !(snplist$SNP %in% instruments[instruments$exposure=="t2d",]$SNP),"feature",snplist$instrument)
+    snplist$instrument <- ifelse(!(snplist$SNP %in% instruments[instruments$exposure==i,]$SNP) & snplist$SNP %in% instruments[instruments$exposure=="t2d",]$SNP,"t2d",snplist$instrument)
 
     # Extract MVMR instrument SNPs from GWAS ---------------------------------
     
     t2d <- extract_snps(gwas = "t2d",
-                        ieugwas = "",
+                        ieugwas = NA,
                         snplist = snplist,
                         label = "t2d")
     
@@ -86,7 +86,7 @@ for (j in c("pad")) {
     # Clump and harmonize MVMR instrument SNPs across GWAS -------------------
     
     dat <- harmonise_snps(snplist = snplist,
-                          t2d_instrument = t2d_instrument,
+                          t2d_instrument = "t2d",
                           t2d = t2d,
                           feature = feature,
                           outcome = outcome)
@@ -122,7 +122,7 @@ for (j in c("pad")) {
                                                   by = uvmr_in$beta.outcome,
                                                   byse = uvmr_in$se.outcome,
                                                   snps = uvmr_in$SNP,
-                                                  exposure = t2d_instrument,
+                                                  exposure = "t2d",
                                                   outcome = j,
                                                   effect_allele = uvmr_in$effect_allele,
                                                   other_allele = uvmr_in$other_allele)
@@ -158,7 +158,7 @@ for (j in c("pad")) {
                                                   by = uvmr_in$beta.feature,
                                                   byse = uvmr_in$se.feature,
                                                   snps = uvmr_in$SNP,
-                                                  exposure = t2d_instrument,
+                                                  exposure = "t2d",
                                                   outcome = j,
                                                   effect_allele = uvmr_in$effect_allele,
                                                   other_allele = uvmr_in$other_allele)

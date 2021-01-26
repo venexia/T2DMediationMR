@@ -1,6 +1,6 @@
 extract_snps <- function(gwas,ieugwas,snplist,label) {
   
-  if (ieugwas=="") {
+  if (is.na(ieugwas)) {
     
     df <- data.table::fread(paste0("data/gwas-",gwas,".txt"),
                              stringsAsFactors = FALSE,

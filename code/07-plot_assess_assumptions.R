@@ -20,13 +20,6 @@ colnames(gwas) <- c("exposure","exposure_name")
 
 results <- merge(results, gwas, by = c("exposure"))
 
-df$exposure_name <- gsub("adjusted","adj.",df$exposure_name)
-df$exposure_name <- gsub("distribution","dist.",df$exposure_name)
-df$exposure_name <- gsub("concentration","con.",df$exposure_name)
-df$exposure_name <- gsub("females","F",df$exposure_name)
-df$exposure_name <- gsub("males","M",df$exposure_name)
-df$exposure_name <- factor(df$exposure_name)
-
 # Format outcome labels -------------------------------------------------------
 
 finn <- data.frame(rbind(c(1,"finn-a-I_INFECT_PARASIT","I","Certain infectious and parasitic diseases"),
@@ -89,4 +82,4 @@ ggplot2::ggplot(data = results,
                  plot.caption = ggplot2::element_text(hjust = 0)) 
 
 ggplot2::ggsave(filename = "output/assess_assumptions.jpeg",
-                dpi = 300, height = 279.4, width = 215.9, unit = "mm", scale = 1)
+                dpi = 300, width = 210, height = 297, unit = "mm", scale = 1)

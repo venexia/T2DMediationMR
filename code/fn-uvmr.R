@@ -25,7 +25,7 @@ uvmr <- function(exposure, outcome) {
   
   # Extract outcome data -------------------------------------------------------
   
-  if (gwas[gwas$trait==outcome,]$ieugwas=="") {
+  if (is.na(gwas[gwas$trait==outcome,]$ieugwas)) {
     
     out <- data.table::fread(paste0("data/gwas-",outcome,".txt"), data.table = FALSE)
     

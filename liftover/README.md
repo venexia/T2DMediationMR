@@ -1,1 +1,0 @@
-This directory contains the input and output files for LiftOver (https://genome.ucsc.edu/cgi-bin/hgLiftOver) used to convert from genome coordinates and annotation from NCBI38/hg18 to GRCH37/hg19.
