@@ -66,6 +66,6 @@ for (i in c("pad","cad")) {
                         strip.position = "top")
   
   ggplot2::ggsave(filename = paste0("output/mvmr_",i,".jpeg"),
-                  dpi = 300,width = 210, height = 148.5, unit = "mm", scale = 1)
+                  dpi = 300,width = 210, height = 148.5, unit = "mm", scale = 0.7)
   
 }

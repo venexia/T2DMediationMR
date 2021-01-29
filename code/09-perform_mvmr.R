@@ -25,8 +25,9 @@ results <- data.frame(analysis = character(),
                       se = numeric(),
                       pval = numeric(),
                       snps = character(),
-                      Q_strength = numeric(),
-                      Q_valid = numeric(),
+                      Qstat = numeric(),
+                      Qpval = numeric(),
+                      Qdf = numeric(),
                       condF = numeric(),
                       stringsAsFactors = FALSE)
 
@@ -110,8 +111,10 @@ for (j in c("pad","cad")) {
       mvmr_plei <- MVMR::pleiotropy_mvmr(r_input = mvmr_in,
                                          gencov = 0)
       
-      results[nrow(results)+1,] <- c(analysis,"t2d",j,"direct",mvmr_out[1,c(1,2,4)],paste0(dat$SNP,collapse = ";"),mvmr_plei$Qstat,mvmr_plei$Qpval,mvmr_stren$exposure1)
-      results[nrow(results)+1,] <- c(analysis,i,j,"direct",mvmr_out[2,c(1,2,4)],paste0(dat$SNP,collapse = ";"),mvmr_plei$Qstat,mvmr_plei$Qpval,mvmr_stren$exposure2)
+      Qdf <- gsub(" DF.*","",gsub(".*on ","",capture.output(mvmr_plei <- MVMR::pleiotropy_mvmr(r_input = mvmr_in,gencov = 0))[2]))
+      
+      results[nrow(results)+1,] <- c(analysis,"t2d",j,"direct",mvmr_out[1,c(1,2,4)],paste0(dat$SNP,collapse = ";"),mvmr_plei$Qstat,mvmr_plei$Qpval,Qdf,mvmr_stren$exposure1)
+      results[nrow(results)+1,] <- c(analysis,i,j,"direct",mvmr_out[2,c(1,2,4)],paste0(dat$SNP,collapse = ";"),mvmr_plei$Qstat,mvmr_plei$Qpval,Qdf,mvmr_stren$exposure2)
       
       # Perform UVMR for t2d on outcome ----------------------------------------
       
@@ -129,7 +132,7 @@ for (j in c("pad","cad")) {
       
       uvmr_out <- MendelianRandomization::mr_ivw(uvmr_in)
       
-      results[nrow(results)+1,] <- c(analysis,"t2d",j,"total_restricted",uvmr_out@Estimate,uvmr_out@StdError,uvmr_out@Pvalue,paste0(uvmr_in$snps,collapse = ";"),rep(NA,3))
+      results[nrow(results)+1,] <- c(analysis,"t2d",j,"total_restricted",uvmr_out@Estimate,uvmr_out@StdError,uvmr_out@Pvalue,paste0(uvmr_in$snps,collapse = ";"),rep(NA,4))
       
       # Perform UVMR for feature on outcome ------------------------------------
       
@@ -147,7 +150,7 @@ for (j in c("pad","cad")) {
       
       uvmr_out <- MendelianRandomization::mr_ivw(uvmr_in)
       
-      results[nrow(results)+1,] <- c(analysis,i,j,"total_restricted",uvmr_out@Estimate,uvmr_out@StdError,uvmr_out@Pvalue,paste0(uvmr_in$snps,collapse = ";"),rep(NA,3))
+      results[nrow(results)+1,] <- c(analysis,i,j,"total_restricted",uvmr_out@Estimate,uvmr_out@StdError,uvmr_out@Pvalue,paste0(uvmr_in$snps,collapse = ";"),rep(NA,4))
       
       # Perform UVMR for t2d on feature ----------------------------------------
       
@@ -165,7 +168,7 @@ for (j in c("pad","cad")) {
       
       uvmr_out <- MendelianRandomization::mr_ivw(uvmr_in)
       
-      results[nrow(results)+1,] <- c(analysis,"t2d",i,"total_restricted",uvmr_out@Estimate,uvmr_out@StdError,uvmr_out@Pvalue,paste0(uvmr_in$snps,collapse = ";"),rep(NA,3))
+      results[nrow(results)+1,] <- c(analysis,"t2d",i,"total_restricted",uvmr_out@Estimate,uvmr_out@StdError,uvmr_out@Pvalue,paste0(uvmr_in$snps,collapse = ";"),rep(NA,4))
       
       # Perform UVMR for feature on t2d ------------------------------------
       
@@ -183,7 +186,7 @@ for (j in c("pad","cad")) {
       
       uvmr_out <- MendelianRandomization::mr_ivw(uvmr_in)
       
-      results[nrow(results)+1,] <- c(analysis,i,"t2d","total_restricted",uvmr_out@Estimate,uvmr_out@StdError,uvmr_out@Pvalue,paste0(uvmr_in$snps,collapse = ";"),rep(NA,3))
+      results[nrow(results)+1,] <- c(analysis,i,"t2d","total_restricted",uvmr_out@Estimate,uvmr_out@StdError,uvmr_out@Pvalue,paste0(uvmr_in$snps,collapse = ";"),rep(NA,4))
       
     }
     

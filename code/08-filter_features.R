@@ -9,10 +9,10 @@ outcomes <- c("t2d","pad","cad")
 # Load univariate results ------------------------------------------------------
 
 df <- data.table::fread("output/results.csv",
-                        select = c("exposure", "outcome", "method","pval","exclude"),
+                        select = c("exposure", "outcome", "method","pval"),
                         data.table = FALSE)
 
-df <- df[df$method %in% c("Inverse variance weighted","Wald ratio") & df$exclude==FALSE,]
+df <- df[df$method %in% c("Inverse variance weighted","Wald ratio"),]
 
 df$analysis <- ""
 

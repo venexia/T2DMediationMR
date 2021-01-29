@@ -77,11 +77,15 @@ df$pc <- df$se/abs(df$estimate)
 df <- df[,c("exposure","mediator","outcome","estimate","se")]
 df$effect <- "indirect"
 df$analysis <- paste0(df$exposure,"_",df$mediator,"_",df$outcome)
-
+df$Qstat <- NA
+df$Qpval <- NA
+df$Qdf <- NA
+df$condF <- NA
+  
 # Add direct effect results ----------------------------------------------------
 
 direct <-  data.table::fread("output/mvmr_results.csv",
-                             select = c("analysis","exposure","outcome","effect","estimate","se"),
+                             select = c("analysis","exposure","outcome","effect","estimate","se","Qstat","Qpval","Qdf","condF"),
                              stringsAsFactors = FALSE,
                              data.table = FALSE)
 
@@ -89,7 +93,7 @@ direct$mediator <- ifelse(direct$exposure=="t2d", gsub("_.*","",direct$analysis)
 direct$analysis <- paste0(direct$exposure,"_",direct$mediator,"_",direct$outcome)
 
 direct <- direct[direct$analysis %in% df$analysis & direct$effect=="direct", 
-                 c("exposure","mediator","outcome","estimate","se","effect","analysis")]
+                 c("exposure","mediator","outcome","estimate","se","effect","analysis","Qstat","Qpval","Qdf","condF")]
 
 df <- rbind(df,direct)
 
@@ -101,12 +105,6 @@ total <-  data.table::fread("output/results.csv",
                             stringsAsFactors = FALSE,
                             data.table = TRUE)
 
-# total[, `:=`(exp_out = paste0(exposure, "_", outcome), effect = "total")]
-# total[, mediator := ifelse(exposure != "t2d", "t2d", NA)]
-# total[, analysis := paste0(exposure, "_", mediator, "_", outcome)]
-# total <- total[exp_out %in% df$exp_out & method %in% c("Wald ratio","Inverse variance weighted")]
-# total <- total[, c("exposure","mediator","outcome","b","se","effect","analysis","exp_out")]
-
 total$exp_out <- paste0(total$exposure,"_",total$outcome)
 total$effect <- "total"
 total$mediator <- ifelse(total$exposure!="t2d","t2d",NA)
@@ -115,7 +113,11 @@ total$analysis <- paste0(total$exposure,"_",total$mediator,"_",total$outcome)
 total <- total[total$exp_out %in% df$exp_out & total$method %in% c("Wald ratio","Inverse variance weighted"), 
                c("exposure","mediator","outcome","b","se","effect","analysis","exp_out")]
 
-colnames(total) <- colnames(df)
+colnames(total) <- c("exposure","mediator","outcome","estimate","se","effect","analysis","exp_out")
+total$Qstat <- NA
+total$Qpval <- NA
+total$Qdf <- NA
+total$condF <- NA
 
 df <- rbind(df,total)
 df$exp_out <- NULL

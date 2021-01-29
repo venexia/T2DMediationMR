@@ -8,53 +8,68 @@ wb <- openxlsx::createWorkbook()
 # Supplementary Table 1 - Features ---------------------------------------------
 
 ST1 <- data.table::fread("raw/gwas.csv", data.table = FALSE)
+ST1 <- ST1[ST1$source!="exclude_feature",]
+ST1$feature <- ST1$source!="outcome"
+ST1$source <- NULL
 openxlsx::addWorksheet(wb, "ST1")
 openxlsx::writeData(wb, "ST1", ST1)
 
 # Supplementary Table 2 - Univariate estimates using alternative methods -------
 
-ST2 <- data.table::fread("output/uvmr_results.csv", data.table = FALSE)
+ST2 <- data.table::fread("output/results.csv", data.table = FALSE)
 
-t2d_evidence <- ST2[ST2$outcome=="t2d" & 
-                      ST2$method %in% c("Wald ratio","Inverse variance weighted") & 
-                      ST2$pval<0.05 &
-                      !(ST2$exposure %in% c("t2d","t2d_udler","pad","cad")),]$exposure
-
-ST2 <- ST2[(ST2$outcome=="t2d") | (ST2$exposure %in% c(t2d_evidence,"t2d") & ST2$outcome %in% c("cad","pad")),c("exposure","outcome","method","nsnp","b","se","pval")]
 ST2 <- merge(ST2, ST1[,c("trait","trait_long")], by.x = "exposure", by.y = "trait")
 ST2$exposure <- ST2$trait_long
 ST2$trait_long <- NULL
 ST2 <- merge(ST2, ST1[,c("trait","trait_long")], by.x = "outcome", by.y = "trait")
 ST2$outcome <- ST2$trait_long
 ST2$trait_long <- NULL
+
 ST2 <- ST2[,c("exposure","outcome","method","nsnp","b","se","pval")]
+colnames(ST2) <- c("exposure","outcome","method","nsnp","estimate","se","pvalue")
+
+ST2$method <- ifelse(ST2$method %in% c("Wald ratio","Inverse variance weighted"),"Main",ST2$method)
+ST2$method <- gsub(" ","_",ST2$method)
+
+ST2 <- tidyr::pivot_wider(ST2, 
+                          names_from = "method",
+                          names_glue = "{method}_{.value}",
+                          values_from = c("estimate","se","pvalue"),
+                          values_fill = NA)
+
+ST2 <- ST2[!(ST2$exposure %in% c("coronary heart disease","peripheral artery disease")),]
+ST2 <- ST2[,c("exposure","outcome","nsnp",
+              paste0("Main",c("_estimate","_se","_pvalue")),
+              paste0("MR_Egger",c("_estimate","_se","_pvalue")),
+              paste0("Simple_mode",c("_estimate","_se","_pvalue")),
+              paste0("Weighted_mode",c("_estimate","_se","_pvalue")),
+              paste0("Weighted_median",c("_estimate","_se","_pvalue")))]
+
+ST2 <- ST2[order(ST2$exposure,ST2$outcome),]
+
 openxlsx::addWorksheet(wb, "ST2")
 openxlsx::writeData(wb, "ST2", ST2)
 
-# Supplementary Table 3 - Multivariable estimates ------------------------------
+# Supplementary Table 3 - two step MR estimates --------------------------------
 
-ST3 <- data.table::fread("output/results.csv", data.table = FALSE)
-ST3 <- ST3[ST3$effect %in% c("direct","indirect"),c("analysis","effect","exposure","outcome","estimate","se","pval")]
-ST3$exposure_other <- gsub("_.*","",ST3$analysis)
-ST3$exposure_other <- ifelse(ST3$exposure==ST3$exposure_other, "t2d", ST3$exposure_other)
+ST3 <- data.table::fread("output/twostep_results.csv", data.table = FALSE)
+ST3 <- ST3[ST3$effect %in% c("direct","indirect"),c("analysis","effect","exposure","mediator","outcome","estimate","se","Qstat","Qpval","Qdf","condF")]
 ST3 <- merge(ST3, ST1[,c("trait","trait_long")], by.x = "exposure", by.y = "trait")
 ST3$exposure <- ST3$trait_long
 ST3$trait_long <- NULL
-ST3 <- merge(ST3, ST1[,c("trait","trait_long")], by.x = "exposure_other", by.y = "trait")
-ST3$exposure_other <- ST3$trait_long
+ST3 <- merge(ST3, ST1[,c("trait","trait_long")], by.x = "mediator", by.y = "trait")
+ST3$mediator <- ST3$trait_long
 ST3$trait_long <- NULL
 ST3 <- merge(ST3, ST1[,c("trait","trait_long")], by.x = "outcome", by.y = "trait")
 ST3$outcome <- ST3$trait_long
 ST3$trait_long <- NULL
-ST3 <- ST3[,c("exposure","exposure_other","outcome","effect","estimate","se","pval")]
-colnames(ST3) <- c("exposure","exposure_other","outcome","effect","b","se","pval")
+ST3 <- ST3[,c("exposure","mediator","outcome","effect","estimate","se","Qstat","Qpval","Qdf","condF")]
 openxlsx::addWorksheet(wb, "ST3")
 openxlsx::writeData(wb, "ST3", ST3)
 
 # Supplementary Table 4 - Egger intercept test ---------------------------------
 
 ST4 <- data.table::fread("output/plei.csv", data.table = FALSE)
-ST4 <- ST4[(ST4$outcome=="t2d") | (ST4$exposure %in% c(t2d_evidence,"t2d") & ST4$outcome %in% c("cad","pad")),c("exposure","outcome","egger_intercept","se","pval")]
 ST4 <- merge(ST4, ST1[,c("trait","trait_long")], by.x = "exposure", by.y = "trait", all.y = TRUE)
 ST4$exposure <- ST4$trait_long
 ST4$trait_long <- NULL
@@ -63,6 +78,7 @@ ST4$outcome <- ST4$trait_long
 ST4$trait_long <- NULL
 ST4 <- ST4[,c("exposure","outcome","egger_intercept","se","pval")]
 ST4 <- na.omit(ST4)
+ST4 <- ST4[!(ST4$exposure %in% c("coronary heart disease","peripheral artery disease")),]
 openxlsx::addWorksheet(wb, "ST4")
 openxlsx::writeData(wb, "ST4", ST4)
 
@@ -77,9 +93,9 @@ ST5$trait_long <- NULL
 ST5 <- merge(ST5, ST1[,c("trait","trait_long")], by.x = "outcome", by.y = "trait", all.x = TRUE)
 ST5$outcome <- ST5$trait_long
 ST5$trait_long <- NULL
-ST5 <- merge(ST5, ST2[ST2$method=="MR Egger",c("exposure","outcome","method")], by = c("exposure","outcome"))
 ST5 <- ST5[,c("exposure","outcome","Isq")]
 ST5 <- na.omit(ST5)
+ST5 <- ST5[!(ST5$exposure %in% c("coronary heart disease","peripheral artery disease")),]
 openxlsx::addWorksheet(wb, "ST5")
 openxlsx::writeData(wb, "ST5", ST5)
 

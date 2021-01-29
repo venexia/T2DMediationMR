@@ -34,9 +34,11 @@ results <- data.table::fread("output/results.csv", data.table = FALSE)
 
 plei <- data.table::fread("output/plei.csv", data.table = FALSE)
 
-for (i in features[59]) {
+for (i in features[41:60]) {
   
   for (j in c("t2d","pad","cad")) {
+    
+    paste0("Exposure: ",i,"; Outcome: ",j)
     
     if (i!=j) {
       
