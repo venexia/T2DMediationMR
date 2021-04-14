@@ -34,9 +34,9 @@ results <- data.table::fread("output/results.csv", data.table = FALSE)
 
 plei <- data.table::fread("output/plei.csv", data.table = FALSE)
 
-for (i in features[41:60]) {
+for (i in features[43:61]) {
   
-  for (j in c("t2d","pad","cad")) {
+  for (j in c("t2d","pad","cad","t2d_linear")) {
     
     paste0("Exposure: ",i,"; Outcome: ",j)
     
@@ -56,18 +56,18 @@ for (i in features[41:60]) {
       
       # Outcome > feature effects ----------------------------------------------
       
-      if (!(i %in% c("t2d","pad","cad"))) { # To avoid duplication as these phenotypes are in the feature list so get tested anyway  
-      
-      tmp <- uvmr(j, i)
-      
-      tmp[[1]]$id.exposure <- NULL
-      tmp[[1]]$id.outcome <- NULL
-      results <- rbind(results, tmp[[1]])
-      
-      tmp[[2]]$id.exposure <- NULL
-      tmp[[2]]$id.outcome <- NULL
-      plei <- rbind(plei, tmp[[2]])
-      
+      if (!(i %in% c("t2d","pad","cad","t2d_linear"))) { # To avoid duplication as these phenotypes are in the feature list so get tested anyway  
+        
+        tmp <- uvmr(j, i)
+        
+        tmp[[1]]$id.exposure <- NULL
+        tmp[[1]]$id.outcome <- NULL
+        results <- rbind(results, tmp[[1]])
+        
+        tmp[[2]]$id.exposure <- NULL
+        tmp[[2]]$id.outcome <- NULL
+        plei <- rbind(plei, tmp[[2]])
+        
       }
       
     }

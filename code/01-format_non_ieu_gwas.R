@@ -186,3 +186,32 @@ colnames(tmp) <- c("SNP","chr","pos",
                    "exposure")
 
 data.table::fwrite(tmp,"data/gwas-pad.txt")
+
+# Format linear T2D GWAS --------------------------------------------------------------
+
+tmp <- data.table::fread("raw/gwas-t2d_linear.txt.gz",
+                         data.table = FALSE,
+                         stringsAsFactors = FALSE)
+
+tmp$exposure <- "t2d_linear"
+tmp$ncase <- 24884
+tmp$ncont <- 437996
+tmp$samplesize <- tmp$ncase + tmp$ncont
+tmp$mu <- tmp$ncase / (tmp$ncase + tmp$ncont)
+
+tmp$BETA_convert <- tmp$BETA / (tmp$mu * (1 - tmp$mu))
+tmp$SE_convert <- tmp$SE / (tmp$mu * (1 - tmp$mu))
+
+tmp <- tmp[,c("SNP","CHR","BP",
+              "ALLELE1","ALLELE0","A1FREQ",
+              "BETA_convert","SE_convert","P_LINREG",
+              "ncase","ncont","samplesize",
+              "exposure")]
+
+colnames(tmp) <- c("SNP","chr","pos",
+                   "effect_allele","other_allele","eaf",
+                   "beta","se","pval",
+                   "ncases","ncontrols","samplesize",
+                   "exposure")
+
+data.table::fwrite(tmp,"data/gwas-t2d_linear.txt")

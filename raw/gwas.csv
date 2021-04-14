@@ -2,6 +2,7 @@
 cad,coronary heart disease,ieu-a-7,outcome,2015,Nikpay,CARDIoGRAMplusC4D,Males and Females,PMID26343387,Mixed,184305,9455779,HG19/GRCh37,log odds,60801,123504
 pad,peripheral artery disease,NA,outcome,2019,Klarin,MVP,Males and Females,PMID31285632,European,NA,NA,HG19/GRCh37,log odds,31307,211753
 t2d,type 2 diabetes,NA,outcome,2018,Mahajan,DIAMANTE,Males and Females,PMID30297969,European,NA,NA,HG19/GRCh37,log odds,74124,824006
+t2d_linear,type 2 diabetes (linear model),NA,outcome,2021,Walker,NA,Males and Females,NA,European,462880,NA,HG19/GRCh37,NA,24884,437996
 alp,liver enzyme ALP,NA,original_feature,2011,Chambers,LOLIPOP,Males and Females,PMID22001757,European,NA,NA,HG18/NCBI36,NA,NA,NA
 alt,liver enzyme ALT,NA,original_feature,2011,Chambers,LOLIPOP,Males and Females,PMID22001757,European,NA,NA,HG18/NCBI36,NA,NA,NA
 ast,liver enzyme AST,NA,original_feature,2011,Chambers,LOLIPOP,Males and Females,PMID22001757,European,NA,NA,HG18/NCBI36,NA,NA,NA

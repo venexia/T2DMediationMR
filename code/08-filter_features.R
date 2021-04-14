@@ -6,6 +6,13 @@ graphics.off()
 threshold <- 0.05
 outcomes <- c("t2d","pad","cad")
 
+# Load master list -------------------------------------------------------------
+
+master <- data.table::fread("raw/gwas.csv", 
+                            data.table = FALSE)
+
+master <- master[master$source %in% c("new_feature","original_feature"),]
+
 # Load univariate results ------------------------------------------------------
 
 df <- data.table::fread("output/results.csv",
@@ -51,5 +58,7 @@ for (i in c("feature_t2d","t2d_feature","feature_pad","feature_cad")) {
 
 df <- df[,c("feature","feature_t2d_evidence","t2d_feature_evidence","feature_pad_evidence","feature_cad_evidence")]
 df <- na.omit(df)
+
+df <- merge(master, df, by.x = "trait", by.y = "feature", all.x = TRUE)
 
 data.table::fwrite(df,"output/evidence_summary.csv")

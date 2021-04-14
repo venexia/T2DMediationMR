@@ -1,6 +1,8 @@
 rm(list=ls())
 graphics.off()
 
+library(magrittr)
+
 # Specify paths ----------------------------------------------------------------
 
 source("code/specify_paths.R", echo = TRUE)
@@ -48,18 +50,26 @@ df$uci_or <- exp(df$uci)
 
 # Plot for each outcome --------------------------------------------------------
 
-uvmr_plot(dat = df[df$exposure=="t2d",], 
+uvmr_plot(dat = df[df$exposure=="t2d" & df$outcome!="t2d_linear",], 
           type = "exposure", 
           trait = "t2d")
 
-uvmr_plot(dat = df[df$outcome=="t2d" & !(df$exposure %in% c("cad","pad")),], 
+uvmr_plot(dat = df[df$outcome=="t2d" & !(df$exposure %in% c("cad","pad","t2d_linear")),], 
           type = "outcome", 
           trait = "t2d")
 
-uvmr_plot(dat = df[df$outcome=="cad" & !(df$exposure %in% c("pad")),], 
+uvmr_plot(dat = df[df$outcome=="cad" & !(df$exposure %in% c("pad","t2d_linear")),], 
           type = "outcome", 
           trait = "cad")
 
-uvmr_plot(dat = df[df$outcome=="pad" & !(df$exposure %in% c("cad")),],
+uvmr_plot(dat = df[df$outcome=="pad" & !(df$exposure %in% c("cad","t2d_linear")),],
           type = "outcome", 
           trait = "pad")
+
+uvmr_plot(dat = df[df$exposure=="t2d_linear" & df$outcome!="t2d",], 
+          type = "exposure", 
+          trait = "t2d_linear")
+
+uvmr_plot(dat = df[df$outcome=="t2d_linear" & !(df$exposure %in% c("cad","pad","t2d")),], 
+          type = "outcome", 
+          trait = "t2d_linear")
