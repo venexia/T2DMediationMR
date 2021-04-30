@@ -9,8 +9,9 @@ wb <- openxlsx::createWorkbook()
 
 ST1 <- data.table::fread("raw/gwas.csv", data.table = FALSE)
 ST1 <- ST1[ST1$source!="exclude_feature",]
-ST1$feature <- ST1$source!="outcome"
+ST1$feature <- NULL
 ST1$source <- NULL
+ST1 <- ST1[!(ST1$trait %in% c("homa-ir","isi","leptin")),]
 openxlsx::addWorksheet(wb, "ST1")
 openxlsx::writeData(wb, "ST1", ST1)
 

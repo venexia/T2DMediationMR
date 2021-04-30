@@ -12,8 +12,12 @@ source("code/fn-uvmr_plot.R", echo = TRUE)
 
 gwas <- data.table::fread("raw/gwas.csv",
                           stringsAsFactors = FALSE,
-                          select = c("trait","trait_long"),
+                          select = c("trait","trait_long","ieugwas"),
                           data.table = FALSE)
+
+ukb_traits <- gwas[grepl("ukb",gwas$ieugwas),]$trait
+
+gwas$ieugwas <- NULL
 
 # Load UVMR results ------------------------------------------------------------
 
@@ -65,11 +69,3 @@ uvmr_plot(dat = df[df$outcome=="cad" & !(df$exposure %in% c("pad","t2d_linear"))
 uvmr_plot(dat = df[df$outcome=="pad" & !(df$exposure %in% c("cad","t2d_linear")),],
           type = "outcome", 
           trait = "pad")
-
-uvmr_plot(dat = df[df$exposure=="t2d_linear" & df$outcome!="t2d",], 
-          type = "exposure", 
-          trait = "t2d_linear")
-
-uvmr_plot(dat = df[df$outcome=="t2d_linear" & !(df$exposure %in% c("cad","pad","t2d")),], 
-          type = "outcome", 
-          trait = "t2d_linear")

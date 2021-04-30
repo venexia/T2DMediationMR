@@ -44,15 +44,25 @@ uvmr_plot <- function(dat, type, trait) {
    dat$sensitivity<- gsub("_"," ",dat$sensitivity)
    colnames(dat) <- c("exposure","exposure_long","outcome","outcome_long","nsnp","main_or","main_lci","main_uci","main_pval","sensitivity_analysis","sensitivity_or","sensitivity_lci","sensitivity_uci","sensitivity_pval")
    
-   dat$trait_plot <- paste0("OR: ",
-                                   ifelse(nchar(signif(dat$main_or, digits = 2))<2, paste0(signif(dat$main_or, digits = 2),".0"),signif(dat$main_or, digits = 2)),
-                                   "; 95% CI: ",
-                                   ifelse(nchar(signif(dat$main_lci, digits = 2))<2, paste0(signif(dat$main_lci, digits = 2),".0"),signif(dat$main_lci, digits = 2)),
-                                   " to ",
-                                   ifelse(nchar(signif(dat$main_uci, digits = 2))<2, paste0(signif(dat$main_uci, digits = 2),".0"),signif(dat$main_uci, digits = 2)),
-                                   "; ",
-                                   dat$nsnp," SNPs")
+   # dat$trait_plot <- paste0("OR: ",
+   #                                 ifelse(nchar(signif(dat$main_or, digits = 3))<3, paste0(signif(dat$main_or, digits = 3),".0"),signif(dat$main_or, digits = 3)),
+   #                                 "; 95% CI: ",
+   #                                 ifelse(nchar(signif(dat$main_lci, digits = 3))<3, paste0(signif(dat$main_lci, digits = 3),".0"),signif(dat$main_lci, digits = 3)),
+   #                                 " to ",
+   #                                 ifelse(nchar(signif(dat$main_uci, digits = 3))<3, paste0(signif(dat$main_uci, digits = 3),".0"),signif(dat$main_uci, digits = 3)),
+   #                                 "; ",
+   #                                 dat$nsnp," SNPs")
    
+   dat$trait_plot <- paste0("OR: ",
+                            sprintf("%.2f",dat$main_or),
+                            "; 95% CI: ",
+                            sprintf("%.2f",dat$main_lci),
+                            " to ",
+                            sprintf("%.2f",dat$main_uci),
+                            "; ",
+                            dat$nsnp," SNPs")
+
+    
    if (type=="exposure") {
      dat$x <- dat$outcome_long
    }

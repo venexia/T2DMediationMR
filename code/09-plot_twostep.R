@@ -11,6 +11,7 @@ features <- data.table::fread("raw/gwas.csv",
 
 df <- data.table::fread("output/twostep_results.csv", data.table = FALSE)
 
+
 df <- merge(df,features[,c("trait","trait_long")],by.x = "exposure",by.y = "trait")
 
 df$lci <- df$estimate - qnorm(0.975)*df$se
@@ -21,11 +22,11 @@ df$lci_or <- exp(df$lci)
 df$uci_or <- exp(df$uci)
 
 df$exposure_plot <- paste0(toupper(substr(df$effect,1,1)),substr(df$effect,2,nchar(df$effect)),", OR: ",
-                            ifelse(nchar(signif(df$or, digits = 2))<2, paste0(signif(df$or, digits = 2),".0"),signif(df$or, digits = 2)),
-                            ", 95% CI: ",
-                            ifelse(nchar(signif(df$lci_or, digits = 2))<2, paste0(signif(df$lci_or, digits = 2),".0"),signif(df$lci_or, digits = 2)),
-                            " to ",
-                            ifelse(nchar(signif(df$uci_or, digits = 2))<2, paste0(signif(df$uci_or, digits = 2),".0"),signif(df$uci_or, digits = 2)))
+                           sprintf("%.2f",df$or),
+                           ", 95% CI: ",
+                           sprintf("%.2f",df$lci_or),
+                           " to ",
+                           sprintf("%.2f",df$uci_or))
 
 # Make plot for each outcome ---------------------------------------------------
 
@@ -66,6 +67,6 @@ for (i in c("pad","cad")) {
                         strip.position = "top")
   
   ggplot2::ggsave(filename = paste0("output/mvmr_",i,".jpeg"),
-                  dpi = 300,width = 210, height = 148.5, unit = "mm", scale = 0.7)
+                  dpi = 300, width = 210, height = 15+(25*nrow(df_plot)), unit = "mm", scale = 0.7)
   
 }

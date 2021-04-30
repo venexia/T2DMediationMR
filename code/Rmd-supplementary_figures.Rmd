@@ -44,8 +44,9 @@ Supplementary Figure 6: Univariate Mendelian randomization estimates for the eff
 knitr::include_graphics("../output/uvmr_pad_outcome_sa.jpeg")
 ```
 
+
 \newpage
-Supplementary Figure 7: Summary plot for the assessment of the independence and exclusion restriction assumptions
+Supplementary Figure 7: Comparison plot illustrating the difference in all Mendelian randomization estimates when using a linear GWAS model for type 2 diabetes versus a logistic GWAS model for type 2 diabetes
 ```{r echo=FALSE, results = 'asis', out.width="93%"}
-knitr::include_graphics("../output/assess_assumptions.jpeg")
+knitr::include_graphics("../output/linear_logistic_comparison.jpeg")
 ```
