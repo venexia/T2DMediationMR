@@ -11,6 +11,8 @@ features <- data.table::fread("raw/gwas.csv",
 
 df <- data.table::fread("output/twostep_results.csv", data.table = FALSE)
 
+df <- df[df$exposure!="t2d_linear",]
+df <- df[df$mediator!="t2d_linear",]
 
 df <- merge(df,features[,c("trait","trait_long")],by.x = "exposure",by.y = "trait")
 
@@ -67,6 +69,6 @@ for (i in c("pad","cad")) {
                         strip.position = "top")
   
   ggplot2::ggsave(filename = paste0("output/mvmr_",i,".jpeg"),
-                  dpi = 300, width = 210, height = 15+(25*nrow(df_plot)), unit = "mm", scale = 0.7)
+                  dpi = 300, width = 210, height = 148.5, unit = "mm", scale = 0.7)
   
 }
