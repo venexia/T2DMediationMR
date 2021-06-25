@@ -2,7 +2,7 @@
 .Rhistory
 .RData*
 .Ruserdata
-T2DSubtypesMR.Rproj
+*.Rproj
 raw/*
 data/*
 output/*
