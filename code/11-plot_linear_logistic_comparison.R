@@ -3,9 +3,15 @@ graphics.off()
 
 # Load UVMR results ------------------------------------------------------------
 
-uvmr <- data.table::fread("output/results.csv",
+uvmr_fwd <- data.table::fread("output/results_fwd.csv",
                         stringsAsFactors = FALSE,
                         data.table = FALSE)
+
+uvmr_bkwd <- data.table::fread("output/results_bkwd.csv",
+                              stringsAsFactors = FALSE,
+                              data.table = FALSE)
+
+uvmr <- rbind(uvmr_fwd, uvmr_bkwd)
 
 # Add confidence intervals to UVMR results -------------------------------------
 
@@ -32,13 +38,15 @@ uvmr$model <- ifelse(uvmr$model=="t2d_linear","linear","logistic")
 uvmr$exposure <- ifelse(uvmr$exposure=="t2d_linear","t2d",uvmr$exposure)
 uvmr$outcome <- ifelse(uvmr$outcome=="t2d_linear","t2d",uvmr$outcome)
 
+uvmr <- uvmr[uvmr$exposure!=uvmr$outcome,]
 uvmr <- tidyr::pivot_wider(uvmr, names_from = "model", values_from = c("or","lci_or","uci_or"))
 uvmr$effect <- "total"
+uvmr$mediator <- ""
 
 # Load MVMR results ------------------------------------------------------------
 
 mvmr <- data.table::fread("output/twostep_results.csv", data.table = FALSE)
-mvmr$model <- ifelse(mvmr$mediator=="t2d_linear","linear","logistic")
+mvmr$model <- ifelse(mvmr$mediator=="t2d_linear" | mvmr$exposure=="t2d_linear","linear","logistic")
 
 # Add confidence intervals to MVMR results -------------------------------------
 
@@ -53,7 +61,11 @@ mvmr$uci_or <- exp(mvmr$uci)
 
 # Identify linear and logistic MVMR results ------------------------------------
 
-mvmr <- mvmr[mvmr$effect %in% c("direct","indirect"), c("exposure","outcome","effect","model","or","lci_or","uci_or")]
+mvmr <- mvmr[mvmr$effect %in% c("direct","indirect"), c("exposure","mediator","outcome","effect","model","or","lci_or","uci_or")]
+
+mvmr$exposure <- ifelse(mvmr$exposure=="t2d_linear","t2d",mvmr$exposure)
+mvmr$mediator <- ifelse(mvmr$mediator=="t2d_linear","t2d",mvmr$mediator)
+
 mvmr <- tidyr::pivot_wider(mvmr, names_from = "model", values_from = c("or","lci_or","uci_or"))
 
 # Combine UVMR and MVMR results ------------------------------------------------
@@ -62,17 +74,24 @@ df <- rbind(mvmr,uvmr)
 
 # Plot linear vs logistic comparison -------------------------------------------
 
-ggplot2::ggplot(df, mapping = ggplot2::aes(x = or_linear, y = or_logistic, color = effect)) +
+df_plot <- na.omit(df)
+df_plot <- df_plot[df_plot$or_linear>=0.1 & 
+                     df_plot$or_logistic>=0.1 &
+                     df_plot$or_linear<=8 & 
+                     df_plot$or_logistic<=8,]
+df_plot <- df_plot[order(df_plot$effect, decreasing = TRUE),]
+
+ggplot2::ggplot(df_plot, mapping = ggplot2::aes(x = or_linear, y = or_logistic, color = effect)) +
   ggplot2::geom_hline(yintercept = 1, col = "dark gray") +
   ggplot2::geom_vline(xintercept = 1, col = "dark gray") +
   ggplot2::geom_abline(intercept = 0, slope = 1, col = "dark gray") +
   ggplot2::geom_point(alpha = 0.5) +
   ggplot2::scale_x_continuous(trans = "log", 
-                              breaks = c(0.5,1,2,4,8),
-                              lim = c(0.5,9)) +
+                              breaks = c(0.25,0.5,1,2,4,8),
+                              lim = c(0.25,8)) +
   ggplot2::scale_y_continuous(trans = "log", 
-                              breaks = c(0.5,1,2,4,8),
-                              lim = c(0.5,9)) +
+                              breaks = c(0.25,0.5,1,2,4,8),
+                              lim = c(0.25,8)) +
   ggplot2::theme_minimal() +
   ggplot2::labs(x = "Mendelian randomization estimate using the linear type 2 diabetes GWAS", 
                 y = "Mendelian randomization estimate using the logistic type 2 diabetes GWAS") +

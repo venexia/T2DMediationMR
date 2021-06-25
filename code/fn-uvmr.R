@@ -1,10 +1,4 @@
 uvmr <- function(exposure, outcome) {
-
-  # Load source data info ------------------------------------------------------
-  
-  gwas <- data.table::fread("raw/gwas.csv",
-                            stringsAsFactors = FALSE,
-                            data.table = FALSE)
   
   # Load instruments -----------------------------------------------------------
   
@@ -12,9 +6,13 @@ uvmr <- function(exposure, outcome) {
   
   ## Create exposure dataset ---------------------------------------------------
   
-  exp <- TwoSampleMR::format_data(dat = instruments[instruments$exposure==exposure,],
+  exp <- TwoSampleMR::format_data(dat = instruments[instruments$id==exposure,],
                                   type = "exposure",
                                   phenotype_col = "exposure")
+  
+  ## Format exposure data ------------------------------------------------------
+  
+  exp$exposure <- exposure
   
   ## Clump data ----------------------------------------------------------------
   
@@ -25,7 +23,7 @@ uvmr <- function(exposure, outcome) {
   
   # Extract outcome data -------------------------------------------------------
   
-  if (is.na(gwas[gwas$trait==outcome,]$ieugwas)) {
+  if (outcome %in% c("t2d","pad","t2d_linear")) {
     
     out <- data.table::fread(paste0("data/gwas-",outcome,".txt"), data.table = FALSE)
     
@@ -54,7 +52,7 @@ uvmr <- function(exposure, outcome) {
   } else {
     
     out <- TwoSampleMR::extract_outcome_data(snps = exp$SNP,
-                                             outcomes = gwas[gwas$trait==outcome,]$ieugwas,
+                                             outcomes = outcome,
                                              proxies = FALSE)
     
   }
