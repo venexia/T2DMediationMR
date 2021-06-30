@@ -1,5 +1,5 @@
 ---
-title: "Separating the effects of cardiometabolic traits from type 2 diabetes on coronary and peripheral artery disease"
+title: "Separating the effects of risk factors from type 2 diabetes on coronary and peripheral artery disease"
 subtitle: "Supplementary Figures"
 output: pdf_document
 ---
@@ -9,44 +9,62 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 \newpage
-Supplementary Figure 1: Univariate Mendelian randomization estimates for the effect of the features on type 2 diabetes using alternative methods
+Supplementary Figure 1: Flow chart showing selection of risk factors for the analysis
+```{r echo=FALSE, results = 'asis', out.width="100%"}
+knitr::include_graphics("../output/GWASFlow.jpg")
+```
+
+
+\newpage
+Supplementary Figure 2: Univariate Mendelian randomization estimates for the effect of the risk factors on liability to type 2 diabetes that meet the 5% FDR threshold (see Supplementary Table 2 for all estimates)
+```{r echo=FALSE, results = 'asis', out.width="90%"}
+knitr::include_graphics("../output/uvmr_t2d_outcome.jpeg")
+```
+
+\newpage
+Supplementary Figure 3: Univariate Mendelian randomization estimates for the effect of liability to type 2 diabetes on the risk factors that meet the 5% FDR threshold (see Supplementary Table 2 for all estimates)
+```{r echo=FALSE, results = 'asis', out.width="90%"}
+knitr::include_graphics("../output/uvmr_t2d_exposure.jpeg")
+```
+
+\newpage
+Supplementary Figure 4: Univariate Mendelian randomization estimates for the effect of the risk factors on liability to type 2 diabetes using alternative methods
 ```{r echo=FALSE, results = 'asis', out.width="100%"}
 knitr::include_graphics("../output/uvmr_t2d_outcome_sa.jpeg")
 ```
 
 \newpage
-Supplementary Figure 2: Univariate Mendelian randomization estimates for the effect of type 2 diabetes on the features using alternative methods
+Supplementary Figure 5: Univariate Mendelian randomization estimates for the effect of liability to type 2 diabetes on the risk factors using alternative methods
 ```{r echo=FALSE, results = 'asis', out.width="100%"}
 knitr::include_graphics("../output/uvmr_t2d_exposure_sa.jpeg")
 ```
 
 \newpage
-Supplementary Figure 3: Univariate Mendelian randomization estimates for the effect of the features on coronary artery disease
-```{r echo=FALSE, results = 'asis', out.width="93%"}
+Supplementary Figure 6: Univariate Mendelian randomization estimates for the effect of the risk factors on liability to coronary artery disease that meet the 5% FDR threshold (see Supplementary Table 2 for all estimates)
+```{r echo=FALSE, results = 'asis', out.width="90%"}
 knitr::include_graphics("../output/uvmr_cad_outcome.jpeg")
 ```
 
 \newpage
-Supplementary Figure 4: Univariate Mendelian randomization estimates for the effect of the features on coronary artery disease using alternative methods
+Supplementary Figure 7: Univariate Mendelian randomization estimates for the effect of the risk factors on liability to coronary artery disease using alternative methods
 ```{r echo=FALSE, results = 'asis', out.width="100%"}
 knitr::include_graphics("../output/uvmr_cad_outcome_sa.jpeg")
 ```
 
 \newpage
-Supplementary Figure 5: Univariate Mendelian randomization estimates for the effect of the features on peripheral artery disease
-```{r echo=FALSE, results = 'asis', out.width="93%"}
+Supplementary Figure 8: Univariate Mendelian randomization estimates for the effect of the risk factors on liability to peripheral artery disease that meet the 5% FDR threshold (see Supplementary Table 2 for all estimates)
+```{r echo=FALSE, results = 'asis', out.width="90%"}
 knitr::include_graphics("../output/uvmr_pad_outcome.jpeg")
 ```
 
 \newpage
-Supplementary Figure 6: Univariate Mendelian randomization estimates for the effect of the features on peripheral artery disease using alternative methods
+Supplementary Figure 9: Univariate Mendelian randomization estimates for the effect of the risk factors on liability to peripheral artery disease using alternative methods
 ```{r echo=FALSE, results = 'asis', out.width="100%"}
 knitr::include_graphics("../output/uvmr_pad_outcome_sa.jpeg")
 ```
 
-
 \newpage
-Supplementary Figure 7: Comparison plot illustrating the difference in all Mendelian randomization estimates when using a linear GWAS model for type 2 diabetes versus a logistic GWAS model for type 2 diabetes
-```{r echo=FALSE, results = 'asis', out.width="93%"}
+Supplementary Figure 10: Comparison plot illustrating the difference in all Mendelian randomization estimates when using a linear GWAS model for liability to type 2 diabetes versus a logistic GWAS model for liability to type 2 diabetes
+```{r echo=FALSE, results = 'asis', out.width="100%"}
 knitr::include_graphics("../output/linear_logistic_comparison.jpeg")
 ```

@@ -31,7 +31,7 @@ df$ncontrol <- NA
 
 # Load outcome instruments -----------------------------------------------------
 
-tmp <- data.table::fread("data/instruments_outcomes.csv")
+tmp <- data.table::fread("data/instruments-outcomes.csv")
 df <- rbind(df, tmp)
 
 # Make all effects positive ---------------------------------------------------
@@ -50,6 +50,16 @@ df <- df %>%
 
 df[,c("beta.original","eaf.original","effect_allele.original","other_allele.original")] <- NULL
 
+# Remove risk factors with less than 10 SNPs -----------------------------------
+
+tmp <- data.frame(table(df$exposure))
+tmp <- tmp[tmp$Freq>=10,]
+tmp$Var1 <- as.character(tmp$Var1)
+
+risk_factors <- risk_factors[risk_factors$id %in% tmp$Var1,]
+df <- df[df$exposure %in% tmp$Var1,]
+
 # Save instruments -------------------------------------------------------------
 
+data.table::fwrite(risk_factors,"data/risk_factors_10snps.csv")
 data.table::fwrite(df,"data/instruments.csv")

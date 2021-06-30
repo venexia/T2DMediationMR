@@ -7,7 +7,7 @@ threshold <- 0.05
 
 # Load master list -------------------------------------------------------------
 
-master <- data.table::fread("data/risk_factors.csv", 
+master <- data.table::fread("data/risk_factors_10snps.csv", 
                             select = c("trait","id"),
                             data.table = FALSE)
 

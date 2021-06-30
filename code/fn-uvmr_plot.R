@@ -1,8 +1,14 @@
 uvmr_plot <- function(dat, type, trait) {
    
+   # Record trait long name ----------------------------------------------------
+   
+   trait_long <- ifelse(trait=="cad","coronary artery disease",
+                        ifelse(trait=="pad","peripheral artery disease",
+                               ifelse(trait=="t2d","type 2 diabetes","")))
+
    # Restrict data to that needed for plotting ----------------------------------
    
-   dat <- dat[,c("id.exposure","exposure","id.outcome","outcome","method","est","est_lci","est_uci","pval","nsnp")]
+   dat <- dat[,c("id.exposure","exposure","id.outcome","outcome","method","est","est_lci","est_uci","pval","nsnp","evidence")]
    dat <- unique(dat)
    
    # Convert data to wide (i.e. one row per exposure) ---------------------------
@@ -10,10 +16,10 @@ uvmr_plot <- function(dat, type, trait) {
    dat$method <- ifelse(dat$method %in% c("Inverse variance weighted","Wald ratio"),"main",dat$method)
    
    dat_main <- dat[dat$method=="main",c("id.exposure","exposure","id.outcome","outcome","nsnp",
-                                        "est","est_lci","est_uci","pval")]
+                                        "est","est_lci","est_uci","pval","evidence")]
    
    colnames(dat_main) <- c("id.exposure","exposure","id.outcome","outcome","nsnp",
-                           "main_est","main_est_lci","main_est_uci","main_pval")
+                           "main_est","main_est_lci","main_est_uci","main_pval","evidence")
    
    dat_sens <- dat[dat$method!="main",c("id.exposure","exposure","id.outcome","outcome","nsnp",
                                         "method","est","est_lci","est_uci","pval")]
@@ -43,7 +49,7 @@ uvmr_plot <- function(dat, type, trait) {
       
       # Plot main results ----------------------------------------------------------
       
-      main <- unique(dat[,c("id.exposure","exposure","id.outcome","outcome","nsnp",
+      main <- unique(dat[dat$evidence==TRUE,c("id.exposure","exposure","id.outcome","outcome","nsnp",
                             "main_est","main_est_lci","main_est_uci","main_pval",
                             "trait_plot")])
       
@@ -65,7 +71,7 @@ uvmr_plot <- function(dat, type, trait) {
                                                                   labels = main$trait_plot),
                                      expand = c(0,0.6)) +
          ggplot2::theme_minimal() +
-         ggplot2::labs(x = paste0("OR and 95% confidence interval for\nthe effect of the features on ",trait), 
+         ggplot2::labs(x = paste0("OR and 95% confidence interval for\nthe effect of the risk factors on ",trait_long), 
                        y = "") +
          ggplot2::theme(panel.grid.major.y = ggplot2::element_blank(),
                         panel.grid.minor = ggplot2::element_blank(),
@@ -77,8 +83,7 @@ uvmr_plot <- function(dat, type, trait) {
       
       # Plot sensitivity analysis results ------------------------------------------
       
-      ggplot2::ggplot(data = dat[dat$nsnp>9,],
-                      mapping = ggplot2::aes(x = main_est, y = sensitivity_est)) +
+      ggplot2::ggplot(data = dat, mapping = ggplot2::aes(x = main_est, y = sensitivity_est)) +
          ggplot2::geom_hline(yintercept = 1, col = "dark gray") +
          ggplot2::geom_vline(xintercept = 1, col = "dark gray") +
          ggplot2::geom_abline(intercept = 0, slope = 1, col = "dark gray") +
@@ -93,15 +98,16 @@ uvmr_plot <- function(dat, type, trait) {
                                      labels = log_labels,
                                      lim = c(0.03,32768)) +
          ggplot2::theme_minimal() +
-         ggplot2::labs(x = paste0("Estimate and 95% confidence interval for the effect of the features on\n",trait," using the inverse variance weighted method"),
-                       y = paste0("Estimate and 95% confidence interval for the effect of the features on\n",trait," using the specified sensitivity analysis method")) +
+         ggplot2::labs(x = paste0("Estimate and 95% confidence interval for the effect of the risk factors on\n",trait_long," using the inverse variance weighted method"),
+                       y = paste0("Estimate and 95% confidence interval for the effect of the risk factors on\n",trait_long," using the specified sensitivity analysis method")) +
          ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                         panel.grid.minor = ggplot2::element_blank(),
                         axis.text = ggplot2::element_text(size=8),
                         text = ggplot2::element_text(size=8),
                         legend.title = ggplot2::element_blank(),
                         legend.position = "bottom",
-                        strip.placement = "outside") +
+                        strip.placement = "outside",
+                        axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, hjust=1)) +
          ggplot2::facet_wrap(.~sensitivity_analysis, strip.position = "left", scales = "free")
       
       ggplot2::ggsave(filename = paste0("output/uvmr_",trait,"_",type,"_sa.jpeg"),
@@ -122,14 +128,13 @@ uvmr_plot <- function(dat, type, trait) {
       
       # Plot main results ----------------------------------------------------------
       
-      main <- unique(dat[,c("id.exposure","exposure","id.outcome","outcome","nsnp",
+      main <- unique(dat[dat$evidence==TRUE,c("id.exposure","exposure","id.outcome","outcome","nsnp",
                             "main_est","main_est_lci","main_est_uci","main_pval",
                             "trait_plot")])
       
       main$yorder <- rank(main$main_est, ties.method = "random")
       
-      ggplot2::ggplot(data = main,
-                      mapping = ggplot2::aes(x = main_est, y = yorder)) +
+      ggplot2::ggplot(data = main, mapping = ggplot2::aes(x = main_est, y = yorder)) +
          ggplot2::geom_vline(xintercept=0, col = "dark grey") +
          ggplot2::geom_linerange(ggplot2::aes(xmin = main_est_lci, xmax = main_est_uci), alpha = 0.5, size = 1, col = "#084594") +
          ggplot2::geom_point(shape = 15, size = 0.5, col = "#084594") +
@@ -142,7 +147,7 @@ uvmr_plot <- function(dat, type, trait) {
                                                                   labels = main$trait_plot),
                                      expand = c(0,0.6)) +
          ggplot2::theme_minimal() +
-         ggplot2::labs(x = paste0("Beta and 95% confidence interval for\nthe effect of ",main$exposure_long[1]," on the features"), 
+         ggplot2::labs(x = paste0("Beta and 95% confidence interval for\nthe effect of ",trait_long," on the risk factors"), 
                        y = "") +
          ggplot2::theme(panel.grid.major.y = ggplot2::element_blank(),
                         panel.grid.minor = ggplot2::element_blank(),
@@ -154,8 +159,7 @@ uvmr_plot <- function(dat, type, trait) {
       
       # Plot sensitivity analysis results ------------------------------------------
       
-      ggplot2::ggplot(data = dat[dat$nsnp>9,],
-                      mapping = ggplot2::aes(x = main_est, y = sensitivity_est)) +
+      ggplot2::ggplot(data = dat, mapping = ggplot2::aes(x = main_est, y = sensitivity_est)) +
          ggplot2::geom_hline(yintercept = 0, col = "dark gray") +
          ggplot2::geom_vline(xintercept = 0, col = "dark gray") +
          ggplot2::geom_abline(intercept = 0, slope = 1, col = "dark gray") +
@@ -166,15 +170,16 @@ uvmr_plot <- function(dat, type, trait) {
          ggplot2::scale_y_continuous(breaks = seq(-2,2,0.5),
                                      lim = c(-2,2)) +
          ggplot2::theme_minimal() +
-         ggplot2::labs(x = paste0("Estimate and 95% confidence interval for the effect of ",trait," on\nthe features using the inverse variance weighted method"),
-                       y = paste0("Estimate and 95% confidence interval for the effect of ",trait," on\nthe features using the specified sensitivity analysis method")) +
+         ggplot2::labs(x = paste0("Estimate and 95% confidence interval for the effect of ",trait_long," on\nthe risk factors using the inverse variance weighted method"),
+                       y = paste0("Estimate and 95% confidence interval for the effect of ",trait_long," on\nthe risk factors using the specified sensitivity analysis method")) +
          ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                         panel.grid.minor = ggplot2::element_blank(),
                         axis.text = ggplot2::element_text(size=8),
                         text = ggplot2::element_text(size=8),
                         legend.title = ggplot2::element_blank(),
                         legend.position = "bottom",
-                        strip.placement = "outside") +
+                        strip.placement = "outside",
+                        axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, hjust=1)) +
          ggplot2::facet_wrap(.~sensitivity_analysis, strip.position = "left", scales = "free")
       
       ggplot2::ggsave(filename = paste0("output/uvmr_",trait,"_",type,"_sa.jpeg"),

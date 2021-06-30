@@ -10,10 +10,6 @@ output/*
 code/specify_paths.R
 tmp/
 documents/
-plink_mac_20200428/
 !raw/README.md
-!raw/gwas.csv
 !data/README.md
 !output/README.md
-trash/
-backup.zip

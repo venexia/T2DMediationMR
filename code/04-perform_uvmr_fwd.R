@@ -52,12 +52,13 @@ for (outcome in c("pad","cad","t2d_linear","t2d")) {
   
   out <- TwoSampleMR::format_data(dat = out,
                                   type = "outcome",
-                                  snps = exp[exp$exposure!=outcome,]$SNP,
+                                  snps = exp$SNP,
                                   phenotype_col = "exposure")
   
   # Harmonise data -------------------------------------------------------------
   
   dat <- TwoSampleMR::harmonise_data(exposure_dat = exp, outcome_dat = out)
+  dat <- dat[dat$exposure!=dat$outcome,]
   
   # Perform MR -----------------------------------------------------------------
   

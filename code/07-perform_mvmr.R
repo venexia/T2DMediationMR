@@ -37,13 +37,13 @@ data.table::fwrite(analyses,"data/mvmr_summary.csv")
 
 # Load source data info --------------------------------------------------------
 
-risk_factors <- data.table::fread("data/risk_factors.csv", data.table = FALSE)
+risk_factors <- data.table::fread("data/risk_factors_10snps.csv", data.table = FALSE)
 
 # Perform analyses -------------------------------------------------------------
 
-results <- data.table::fread("output/mvmr_results.csv")
+results <- NULL #data.table::fread("output/mvmr_results.csv")
 
-for (i in 29:nrow(analyses)) {
+for (i in 1:nrow(analyses)) {
   
   tmp_results <- mvmr(exposure = analyses$exposure[i],
                       mediator = analyses$mediator[i],

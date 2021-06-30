@@ -42,7 +42,7 @@ plei_bkwd <- NULL
 # Extract outcome data ---------------------------------------------------------
 
 out <- TwoSampleMR::extract_outcome_data(snps = exp$SNP,
-                                         outcomes = risk_factors[risk_factors$id!=risk_factors$trait,]$id,
+                                         outcomes = risk_factors$id,
                                          proxies = FALSE)
 
 out$outcome <- out$id.outcome
