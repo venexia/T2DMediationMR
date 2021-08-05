@@ -138,8 +138,8 @@ uvmr_plot <- function(dat, type, trait) {
          ggplot2::geom_vline(xintercept=0, col = "dark grey") +
          ggplot2::geom_linerange(ggplot2::aes(xmin = main_est_lci, xmax = main_est_uci), alpha = 0.5, size = 1, col = "#084594") +
          ggplot2::geom_point(shape = 15, size = 0.5, col = "#084594") +
-         ggplot2::scale_x_continuous(breaks = seq(-2,2,0.5),
-                                     lim = c(-2,2)) +
+         ggplot2::scale_x_continuous(breaks = seq(-100,100,0.1),
+                                     lim = c(round(min(main$main_est_lci),1)-0.05,round(max(main$main_est_uci),1)+0.05)) +
          ggplot2::scale_y_continuous(breaks = main$yorder,
                                      labels = main$outcome,
                                      sec.axis = ggplot2::sec_axis(~.,
@@ -151,6 +151,7 @@ uvmr_plot <- function(dat, type, trait) {
                        y = "") +
          ggplot2::theme(panel.grid.major.y = ggplot2::element_blank(),
                         panel.grid.minor = ggplot2::element_blank(),
+                        strip.text = ggplot2::element_text(size=8),
                         axis.text = ggplot2::element_text(size=8),
                         text = ggplot2::element_text(size=8))
       
@@ -174,6 +175,7 @@ uvmr_plot <- function(dat, type, trait) {
                        y = paste0("Estimate and 95% confidence interval for the effect of ",trait_long," on\nthe risk factors using the specified sensitivity analysis method")) +
          ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                         panel.grid.minor = ggplot2::element_blank(),
+                        strip.text = ggplot2::element_text(size=8),
                         axis.text = ggplot2::element_text(size=8),
                         text = ggplot2::element_text(size=8),
                         legend.title = ggplot2::element_blank(),

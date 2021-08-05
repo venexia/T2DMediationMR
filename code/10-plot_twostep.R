@@ -51,8 +51,8 @@ for (outcome in c("pad","cad")) {
   ggplot2::ggplot(data = df[df$outcome==outcome & df$t2d_mediator==TRUE,], 
                   mapping = ggplot2::aes(y = exposure_plot, x = or, color = effect)) +
     ggplot2::geom_vline(xintercept=1, col = "dark gray") +
-    ggplot2::geom_linerange(ggplot2::aes(xmin = lci_or, xmax = uci_or), alpha = 0.5, position=ggplot2::position_dodge(width=0.5)) +
-    ggplot2::geom_point(shape = 15, size = 0.15, position=ggplot2::position_dodge(width=0.5)) +
+    ggplot2::geom_linerange(ggplot2::aes(xmin = lci_or, xmax = uci_or), alpha = 0.5, position=ggplot2::position_dodge(width=0.5), size = 2) +
+    ggplot2::geom_point(shape = 15, size = 1.5, position=ggplot2::position_dodge(width=0.5)) +
     ggplot2::scale_x_continuous(trans = "log", breaks = c(0.5,1,2,4),lim = c(0.5,6)) +
     ggplot2::scale_y_discrete(position = "left") +
     ggplot2::scale_color_manual(breaks = c("direct","indirect","total"), values = c("#e41a1c","#377eb8","#984ea3"), labels = c("Independent of type 2 diabetes","Through type 2 diabetes","Total")) +
@@ -63,7 +63,7 @@ for (outcome in c("pad","cad")) {
                    panel.grid.minor = ggplot2::element_blank(),
                    axis.text = ggplot2::element_text(size=8),
                    text = ggplot2::element_text(size=8),
-                   strip.text = ggplot2::element_text(angle = 0),
+                   strip.text = ggplot2::element_text(angle = 0, size=8),
                    legend.position = "none") +
     ggplot2::facet_wrap(trait~., scales = "free_y", 
                         nrow = length(unique(df[df$outcome==outcome & df$t2d_mediator==TRUE,]$trait)), 
@@ -77,8 +77,8 @@ for (outcome in c("pad","cad")) {
   ggplot2::ggplot(data = df[df$outcome==outcome & df$t2d_mediator==FALSE,], 
                   mapping = ggplot2::aes(y = exposure_plot, x = or, color = effect)) +
     ggplot2::geom_vline(xintercept=1, col = "dark gray") +
-    ggplot2::geom_linerange(ggplot2::aes(xmin = lci_or, xmax = uci_or), alpha = 0.5, position=ggplot2::position_dodge(width=0.5)) +
-    ggplot2::geom_point(shape = 15, size = 0.15, position=ggplot2::position_dodge(width=0.5)) +
+    ggplot2::geom_linerange(ggplot2::aes(xmin = lci_or, xmax = uci_or), alpha = 0.5, position=ggplot2::position_dodge(width=0.5), size = 2) +
+    ggplot2::geom_point(shape = 15, size = 1.5, position=ggplot2::position_dodge(width=0.5)) +
     ggplot2::scale_x_continuous(trans = "log", breaks = c(0.5,1,2,4),lim = c(0.5,6)) +
     ggplot2::scale_y_discrete(position = "left") +
     ggplot2::scale_color_manual(breaks = c("direct","indirect","total"), values = c("#e41a1c","#377eb8","#984ea3"), labels = c("Independent of type 2 diabetes","Through type 2 diabetes","Total")) +
@@ -89,7 +89,7 @@ for (outcome in c("pad","cad")) {
                    panel.grid.minor = ggplot2::element_blank(),
                    axis.text = ggplot2::element_text(size=8),
                    text = ggplot2::element_text(size=8),
-                   strip.text = ggplot2::element_text(angle = 0),
+                   strip.text = ggplot2::element_text(angle = 0, size=8),
                    legend.position = "none") +
     ggplot2::facet_wrap(trait~., scales = "free_y", 
                         nrow = length(unique(df[df$outcome==outcome & df$t2d_mediator==FALSE,]$trait)), 
